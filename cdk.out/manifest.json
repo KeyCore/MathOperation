@@ -1,0 +1,396 @@
+{
+  "version": "32.0.0",
+  "artifacts": {
+    "MathOperationStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "MathOperationStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "MathOperationStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://153065748672/eu-west-1",
+      "properties": {
+        "templateFile": "MathOperationStack.template.json",
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::153065748672:role/cdk-hnb659fds-deploy-role-153065748672-eu-west-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::153065748672:role/cdk-hnb659fds-cfn-exec-role-153065748672-eu-west-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-153065748672-eu-west-1/28ad802cbaabc5b50877a0cc441fe125681061f2ac529b4f5a8969f117bc8b14.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "MathOperationStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::153065748672:role/cdk-hnb659fds-lookup-role-153065748672-eu-west-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "MathOperationStack.assets"
+      ],
+      "metadata": {
+        "/MathOperationStack/myBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "myBucket5AF9C99B"
+          }
+        ],
+        "/MathOperationStack/myBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "myBucketPolicyDAC36B74"
+          }
+        ],
+        "/MathOperationStack/myDist/Origin1/S3Origin/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "myDistOrigin1S3Origin5717909C"
+          }
+        ],
+        "/MathOperationStack/myDist/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "myDist9DB766F3"
+          }
+        ],
+        "/MathOperationStack/BucketDeployment/AwsCliLayer/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BucketDeploymentAwsCliLayerB018DCE1"
+          }
+        ],
+        "/MathOperationStack/BucketDeployment/CustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BucketDeploymentCustomResourceCB7E2133"
+          }
+        ],
+        "/MathOperationStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265"
+          }
+        ],
+        "/MathOperationStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF"
+          }
+        ],
+        "/MathOperationStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536"
+          }
+        ],
+        "/MathOperationStack/MathOperationTableTest": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "MathOperationTableTestD45CB9BB"
+            }
+          }
+        ],
+        "/MathOperationStack/MathOperationTableTest/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MathOperationTableTestD45CB9BB"
+          }
+        ],
+        "/MathOperationStack/plusFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "plusFunctionServiceRoleF4E3D7DA"
+          }
+        ],
+        "/MathOperationStack/plusFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "plusFunctionServiceRoleDefaultPolicy73B2D6CC"
+          }
+        ],
+        "/MathOperationStack/plusFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "plusFunction0E5FEE53"
+          }
+        ],
+        "/MathOperationStack/minusFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "minusFunctionServiceRoleCD82B73F"
+          }
+        ],
+        "/MathOperationStack/minusFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "minusFunctionServiceRoleDefaultPolicy370B465B"
+          }
+        ],
+        "/MathOperationStack/minusFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "minusFunction2F01936A"
+          }
+        ],
+        "/MathOperationStack/multiplicationFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "multiplicationFunctionServiceRoleB6482EA6"
+          }
+        ],
+        "/MathOperationStack/multiplicationFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "multiplicationFunctionServiceRoleDefaultPolicy0E59E718"
+          }
+        ],
+        "/MathOperationStack/multiplicationFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "multiplicationFunction44611578"
+          }
+        ],
+        "/MathOperationStack/divisionFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "divisionFunctionServiceRole7CB3E965"
+          }
+        ],
+        "/MathOperationStack/divisionFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "divisionFunctionServiceRoleDefaultPolicy53289718"
+          }
+        ],
+        "/MathOperationStack/divisionFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "divisionFunctionB6CF2A6A"
+          }
+        ],
+        "/MathOperationStack/exponentialFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "exponentialFunctionServiceRole18057CE7"
+          }
+        ],
+        "/MathOperationStack/exponentialFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "exponentialFunctionServiceRoleDefaultPolicy2A2052F8"
+          }
+        ],
+        "/MathOperationStack/exponentialFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "exponentialFunctionAF392EE9"
+          }
+        ],
+        "/MathOperationStack/MathOperationAPI/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MathOperationAPI9E796E57"
+          }
+        ],
+        "/MathOperationStack/MathOperationAPI/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MathOperationAPIDeployment7EA6BA38b00a87e0886ea802101848be81dcc475"
+          }
+        ],
+        "/MathOperationStack/MathOperationAPI/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MathOperationAPIDeploymentStageprod6900F1BA"
+          }
+        ],
+        "/MathOperationStack/MathOperationAPI/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MathOperationAPIEndpoint76A7B96C"
+          }
+        ],
+        "/MathOperationStack/MathOperationAPI/Default/summation/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MathOperationAPIsummation8D583DA4"
+          }
+        ],
+        "/MathOperationStack/MathOperationAPI/Default/summation/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MathOperationAPIsummationOPTIONS441DF4CD"
+          }
+        ],
+        "/MathOperationStack/MathOperationAPI/Default/summation/POST/ApiPermission.MathOperationStackMathOperationAPI1E32C3C2.POST..summation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MathOperationAPIsummationPOSTApiPermissionMathOperationStackMathOperationAPI1E32C3C2POSTsummationD5352AC1"
+          }
+        ],
+        "/MathOperationStack/MathOperationAPI/Default/summation/POST/ApiPermission.Test.MathOperationStackMathOperationAPI1E32C3C2.POST..summation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MathOperationAPIsummationPOSTApiPermissionTestMathOperationStackMathOperationAPI1E32C3C2POSTsummationB09691C7"
+          }
+        ],
+        "/MathOperationStack/MathOperationAPI/Default/summation/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MathOperationAPIsummationPOST1144A981"
+          }
+        ],
+        "/MathOperationStack/MathOperationAPI/Default/subtraction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MathOperationAPIsubtraction35AA3493"
+          }
+        ],
+        "/MathOperationStack/MathOperationAPI/Default/subtraction/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MathOperationAPIsubtractionOPTIONS70936BD9"
+          }
+        ],
+        "/MathOperationStack/MathOperationAPI/Default/subtraction/POST/ApiPermission.MathOperationStackMathOperationAPI1E32C3C2.POST..subtraction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MathOperationAPIsubtractionPOSTApiPermissionMathOperationStackMathOperationAPI1E32C3C2POSTsubtractionAF0DA047"
+          }
+        ],
+        "/MathOperationStack/MathOperationAPI/Default/subtraction/POST/ApiPermission.Test.MathOperationStackMathOperationAPI1E32C3C2.POST..subtraction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MathOperationAPIsubtractionPOSTApiPermissionTestMathOperationStackMathOperationAPI1E32C3C2POSTsubtraction91A19C65"
+          }
+        ],
+        "/MathOperationStack/MathOperationAPI/Default/subtraction/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MathOperationAPIsubtractionPOST2CFE0DB3"
+          }
+        ],
+        "/MathOperationStack/MathOperationAPI/Default/multiplication/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MathOperationAPImultiplication34E7A432"
+          }
+        ],
+        "/MathOperationStack/MathOperationAPI/Default/multiplication/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MathOperationAPImultiplicationOPTIONS69E9E38B"
+          }
+        ],
+        "/MathOperationStack/MathOperationAPI/Default/multiplication/POST/ApiPermission.MathOperationStackMathOperationAPI1E32C3C2.POST..multiplication": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MathOperationAPImultiplicationPOSTApiPermissionMathOperationStackMathOperationAPI1E32C3C2POSTmultiplication87BE7582"
+          }
+        ],
+        "/MathOperationStack/MathOperationAPI/Default/multiplication/POST/ApiPermission.Test.MathOperationStackMathOperationAPI1E32C3C2.POST..multiplication": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MathOperationAPImultiplicationPOSTApiPermissionTestMathOperationStackMathOperationAPI1E32C3C2POSTmultiplicationB76D6A01"
+          }
+        ],
+        "/MathOperationStack/MathOperationAPI/Default/multiplication/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MathOperationAPImultiplicationPOST905E5CA4"
+          }
+        ],
+        "/MathOperationStack/MathOperationAPI/Default/division/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MathOperationAPIdivisionBD481641"
+          }
+        ],
+        "/MathOperationStack/MathOperationAPI/Default/division/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MathOperationAPIdivisionOPTIONSDA8E5B1B"
+          }
+        ],
+        "/MathOperationStack/MathOperationAPI/Default/division/POST/ApiPermission.MathOperationStackMathOperationAPI1E32C3C2.POST..division": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MathOperationAPIdivisionPOSTApiPermissionMathOperationStackMathOperationAPI1E32C3C2POSTdivisionD337ED36"
+          }
+        ],
+        "/MathOperationStack/MathOperationAPI/Default/division/POST/ApiPermission.Test.MathOperationStackMathOperationAPI1E32C3C2.POST..division": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MathOperationAPIdivisionPOSTApiPermissionTestMathOperationStackMathOperationAPI1E32C3C2POSTdivision9400B3DC"
+          }
+        ],
+        "/MathOperationStack/MathOperationAPI/Default/division/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MathOperationAPIdivisionPOST9C7E8F2B"
+          }
+        ],
+        "/MathOperationStack/MathOperationAPI/Default/exponential/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MathOperationAPIexponential7438FB21"
+          }
+        ],
+        "/MathOperationStack/MathOperationAPI/Default/exponential/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MathOperationAPIexponentialOPTIONS6A782BC0"
+          }
+        ],
+        "/MathOperationStack/MathOperationAPI/Default/exponential/POST/ApiPermission.MathOperationStackMathOperationAPI1E32C3C2.POST..exponential": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MathOperationAPIexponentialPOSTApiPermissionMathOperationStackMathOperationAPI1E32C3C2POSTexponential466971E4"
+          }
+        ],
+        "/MathOperationStack/MathOperationAPI/Default/exponential/POST/ApiPermission.Test.MathOperationStackMathOperationAPI1E32C3C2.POST..exponential": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MathOperationAPIexponentialPOSTApiPermissionTestMathOperationStackMathOperationAPI1E32C3C2POSTexponential86874BF0"
+          }
+        ],
+        "/MathOperationStack/MathOperationAPI/Default/exponential/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MathOperationAPIexponentialPOST10258369"
+          }
+        ],
+        "/MathOperationStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/MathOperationStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/MathOperationStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "MathOperationStack"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

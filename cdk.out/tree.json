@@ -1,0 +1,2792 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "MathOperationStack": {
+        "id": "MathOperationStack",
+        "path": "MathOperationStack",
+        "children": {
+          "myBucket": {
+            "id": "myBucket",
+            "path": "MathOperationStack/myBucket",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "MathOperationStack/myBucket/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                  "aws:cdk:cloudformation:props": {
+                    "tags": [
+                      {
+                        "key": "aws-cdk:cr-owned:7e736162",
+                        "value": "true"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
+                  "version": "2.81.0"
+                }
+              },
+              "Policy": {
+                "id": "Policy",
+                "path": "MathOperationStack/myBucket/Policy",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "MathOperationStack/myBucket/Policy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::S3::BucketPolicy",
+                      "aws:cdk:cloudformation:props": {
+                        "bucket": {
+                          "Ref": "myBucket5AF9C99B"
+                        },
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "s3:GetObject",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "CanonicalUser": {
+                                  "Fn::GetAtt": [
+                                    "myDistOrigin1S3Origin5717909C",
+                                    "S3CanonicalUserId"
+                                  ]
+                                }
+                              },
+                              "Resource": {
+                                "Fn::Join": [
+                                  "",
+                                  [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "myBucket5AF9C99B",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "/*"
+                                  ]
+                                ]
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
+                      "version": "2.81.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
+                  "version": "2.81.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_s3.Bucket",
+              "version": "2.81.0"
+            }
+          },
+          "myDist": {
+            "id": "myDist",
+            "path": "MathOperationStack/myDist",
+            "children": {
+              "Origin1": {
+                "id": "Origin1",
+                "path": "MathOperationStack/myDist/Origin1",
+                "children": {
+                  "S3Origin": {
+                    "id": "S3Origin",
+                    "path": "MathOperationStack/myDist/Origin1/S3Origin",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "MathOperationStack/myDist/Origin1/S3Origin/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+                          "aws:cdk:cloudformation:props": {
+                            "cloudFrontOriginAccessIdentityConfig": {
+                              "comment": "Identity for MathOperationStackmyDistOrigin1F526FDDB"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_cloudfront.CfnCloudFrontOriginAccessIdentity",
+                          "version": "2.81.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudfront.OriginAccessIdentity",
+                      "version": "2.81.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.2.33"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "MathOperationStack/myDist/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::CloudFront::Distribution",
+                  "aws:cdk:cloudformation:props": {
+                    "distributionConfig": {
+                      "enabled": true,
+                      "origins": [
+                        {
+                          "domainName": {
+                            "Fn::GetAtt": [
+                              "myBucket5AF9C99B",
+                              "RegionalDomainName"
+                            ]
+                          },
+                          "id": "MathOperationStackmyDistOrigin1F526FDDB",
+                          "s3OriginConfig": {
+                            "originAccessIdentity": {
+                              "Fn::Join": [
+                                "",
+                                [
+                                  "origin-access-identity/cloudfront/",
+                                  {
+                                    "Ref": "myDistOrigin1S3Origin5717909C"
+                                  }
+                                ]
+                              ]
+                            }
+                          }
+                        }
+                      ],
+                      "defaultCacheBehavior": {
+                        "pathPattern": "*",
+                        "targetOriginId": "MathOperationStackmyDistOrigin1F526FDDB",
+                        "cachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
+                        "compress": true,
+                        "viewerProtocolPolicy": "allow-all"
+                      },
+                      "defaultRootObject": "index.html",
+                      "httpVersion": "http2",
+                      "ipv6Enabled": true
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudfront.CfnDistribution",
+                  "version": "2.81.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_cloudfront.Distribution",
+              "version": "2.81.0"
+            }
+          },
+          "BucketDeployment": {
+            "id": "BucketDeployment",
+            "path": "MathOperationStack/BucketDeployment",
+            "children": {
+              "AwsCliLayer": {
+                "id": "AwsCliLayer",
+                "path": "MathOperationStack/BucketDeployment/AwsCliLayer",
+                "children": {
+                  "Code": {
+                    "id": "Code",
+                    "path": "MathOperationStack/BucketDeployment/AwsCliLayer/Code",
+                    "children": {
+                      "Stage": {
+                        "id": "Stage",
+                        "path": "MathOperationStack/BucketDeployment/AwsCliLayer/Code/Stage",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.AssetStaging",
+                          "version": "2.81.0"
+                        }
+                      },
+                      "AssetBucket": {
+                        "id": "AssetBucket",
+                        "path": "MathOperationStack/BucketDeployment/AwsCliLayer/Code/AssetBucket",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                          "version": "2.81.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                      "version": "2.81.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "MathOperationStack/BucketDeployment/AwsCliLayer/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Lambda::LayerVersion",
+                      "aws:cdk:cloudformation:props": {
+                        "content": {
+                          "s3Bucket": "cdk-hnb659fds-assets-153065748672-eu-west-1",
+                          "s3Key": "44a0e383be3d862079d4e38f75b61b56e911d6b940ae08bf1553c13c3b692a87.zip"
+                        },
+                        "description": "/opt/awscli/aws"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_lambda.CfnLayerVersion",
+                      "version": "2.81.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.lambda_layer_awscli.AwsCliLayer",
+                  "version": "2.81.0"
+                }
+              },
+              "CustomResourceHandler": {
+                "id": "CustomResourceHandler",
+                "path": "MathOperationStack/BucketDeployment/CustomResourceHandler",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.SingletonFunction",
+                  "version": "2.81.0"
+                }
+              },
+              "Asset1": {
+                "id": "Asset1",
+                "path": "MathOperationStack/BucketDeployment/Asset1",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "MathOperationStack/BucketDeployment/Asset1/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.81.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "MathOperationStack/BucketDeployment/Asset1/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.81.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.81.0"
+                }
+              },
+              "CustomResource": {
+                "id": "CustomResource",
+                "path": "MathOperationStack/BucketDeployment/CustomResource",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "MathOperationStack/BucketDeployment/CustomResource/Default",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnResource",
+                      "version": "2.81.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CustomResource",
+                  "version": "2.81.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_s3_deployment.BucketDeployment",
+              "version": "2.81.0"
+            }
+          },
+          "Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C": {
+            "id": "Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C",
+            "path": "MathOperationStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "MathOperationStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole",
+                "children": {
+                  "ImportServiceRole": {
+                    "id": "ImportServiceRole",
+                    "path": "MathOperationStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/ImportServiceRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.81.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "MathOperationStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.81.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "MathOperationStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "MathOperationStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "s3:GetBucket*",
+                                    "s3:GetObject*",
+                                    "s3:List*"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    "arn:aws:s3:::cdk-hnb659fds-assets-153065748672-eu-west-1",
+                                    "arn:aws:s3:::cdk-hnb659fds-assets-153065748672-eu-west-1/*"
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "s3:Abort*",
+                                    "s3:DeleteObject*",
+                                    "s3:GetBucket*",
+                                    "s3:GetObject*",
+                                    "s3:List*",
+                                    "s3:PutObject",
+                                    "s3:PutObjectLegalHold",
+                                    "s3:PutObjectRetention",
+                                    "s3:PutObjectTagging",
+                                    "s3:PutObjectVersionTagging"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "myBucket5AF9C99B",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::GetAtt": [
+                                              "myBucket5AF9C99B",
+                                              "Arn"
+                                            ]
+                                          },
+                                          "/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "cloudfront:CreateInvalidation",
+                                    "cloudfront:GetInvalidation"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": "*"
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
+                            "roles": [
+                              {
+                                "Ref": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.81.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.81.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.81.0"
+                }
+              },
+              "Code": {
+                "id": "Code",
+                "path": "MathOperationStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "MathOperationStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.81.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "MathOperationStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.81.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.81.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "MathOperationStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": "cdk-hnb659fds-assets-153065748672-eu-west-1",
+                      "s3Key": "9eb41a5505d37607ac419321497a4f8c21cf0ee1f9b4a6b29aa04301aea5c7fd.zip"
+                    },
+                    "role": {
+                      "Fn::GetAtt": [
+                        "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
+                        "Arn"
+                      ]
+                    },
+                    "environment": {
+                      "variables": {
+                        "AWS_CA_BUNDLE": "/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem"
+                      }
+                    },
+                    "handler": "index.handler",
+                    "layers": [
+                      {
+                        "Ref": "BucketDeploymentAwsCliLayerB018DCE1"
+                      }
+                    ],
+                    "runtime": "python3.9",
+                    "timeout": 900
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.81.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.81.0"
+            }
+          },
+          "MathOperationTableTest": {
+            "id": "MathOperationTableTest",
+            "path": "MathOperationStack/MathOperationTableTest",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "MathOperationStack/MathOperationTableTest/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                  "aws:cdk:cloudformation:props": {
+                    "keySchema": [
+                      {
+                        "attributeName": "operation",
+                        "keyType": "HASH"
+                      },
+                      {
+                        "attributeName": "operand2",
+                        "keyType": "RANGE"
+                      }
+                    ],
+                    "attributeDefinitions": [
+                      {
+                        "attributeName": "operation",
+                        "attributeType": "S"
+                      },
+                      {
+                        "attributeName": "operand2",
+                        "attributeType": "N"
+                      }
+                    ],
+                    "billingMode": "PAY_PER_REQUEST",
+                    "tableName": "MathOperationTableTest"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                  "version": "2.81.0"
+                }
+              },
+              "ScalingRole": {
+                "id": "ScalingRole",
+                "path": "MathOperationStack/MathOperationTableTest/ScalingRole",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.81.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+              "version": "2.81.0"
+            }
+          },
+          "plusFunction": {
+            "id": "plusFunction",
+            "path": "MathOperationStack/plusFunction",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "MathOperationStack/plusFunction/ServiceRole",
+                "children": {
+                  "ImportServiceRole": {
+                    "id": "ImportServiceRole",
+                    "path": "MathOperationStack/plusFunction/ServiceRole/ImportServiceRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.81.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "MathOperationStack/plusFunction/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.81.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "MathOperationStack/plusFunction/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "MathOperationStack/plusFunction/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:Query",
+                                    "dynamodb:Scan",
+                                    "dynamodb:UpdateItem"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "MathOperationTableTestD45CB9BB",
+                                      "Arn"
+                                    ]
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "plusFunctionServiceRoleDefaultPolicy73B2D6CC",
+                            "roles": [
+                              {
+                                "Ref": "plusFunctionServiceRoleF4E3D7DA"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.81.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.81.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.81.0"
+                }
+              },
+              "Code": {
+                "id": "Code",
+                "path": "MathOperationStack/plusFunction/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "MathOperationStack/plusFunction/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.81.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "MathOperationStack/plusFunction/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.81.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.81.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "MathOperationStack/plusFunction/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": "cdk-hnb659fds-assets-153065748672-eu-west-1",
+                      "s3Key": "f282ba85660d2ec9f99ddbc5e7d3ed9f3507be142f7313cc50344dfafbd85818.zip"
+                    },
+                    "role": {
+                      "Fn::GetAtt": [
+                        "plusFunctionServiceRoleF4E3D7DA",
+                        "Arn"
+                      ]
+                    },
+                    "handler": "plusFunction.lambda_handler",
+                    "runtime": "python3.9",
+                    "timeout": 30
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.81.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.81.0"
+            }
+          },
+          "minusFunction": {
+            "id": "minusFunction",
+            "path": "MathOperationStack/minusFunction",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "MathOperationStack/minusFunction/ServiceRole",
+                "children": {
+                  "ImportServiceRole": {
+                    "id": "ImportServiceRole",
+                    "path": "MathOperationStack/minusFunction/ServiceRole/ImportServiceRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.81.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "MathOperationStack/minusFunction/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.81.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "MathOperationStack/minusFunction/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "MathOperationStack/minusFunction/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:Query",
+                                    "dynamodb:Scan",
+                                    "dynamodb:UpdateItem"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "MathOperationTableTestD45CB9BB",
+                                      "Arn"
+                                    ]
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "minusFunctionServiceRoleDefaultPolicy370B465B",
+                            "roles": [
+                              {
+                                "Ref": "minusFunctionServiceRoleCD82B73F"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.81.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.81.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.81.0"
+                }
+              },
+              "Code": {
+                "id": "Code",
+                "path": "MathOperationStack/minusFunction/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "MathOperationStack/minusFunction/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.81.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "MathOperationStack/minusFunction/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.81.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.81.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "MathOperationStack/minusFunction/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": "cdk-hnb659fds-assets-153065748672-eu-west-1",
+                      "s3Key": "f282ba85660d2ec9f99ddbc5e7d3ed9f3507be142f7313cc50344dfafbd85818.zip"
+                    },
+                    "role": {
+                      "Fn::GetAtt": [
+                        "minusFunctionServiceRoleCD82B73F",
+                        "Arn"
+                      ]
+                    },
+                    "handler": "minusFunction.lambda_handler",
+                    "runtime": "python3.9",
+                    "timeout": 30
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.81.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.81.0"
+            }
+          },
+          "multiplicationFunction": {
+            "id": "multiplicationFunction",
+            "path": "MathOperationStack/multiplicationFunction",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "MathOperationStack/multiplicationFunction/ServiceRole",
+                "children": {
+                  "ImportServiceRole": {
+                    "id": "ImportServiceRole",
+                    "path": "MathOperationStack/multiplicationFunction/ServiceRole/ImportServiceRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.81.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "MathOperationStack/multiplicationFunction/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.81.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "MathOperationStack/multiplicationFunction/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "MathOperationStack/multiplicationFunction/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:Query",
+                                    "dynamodb:Scan",
+                                    "dynamodb:UpdateItem"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "MathOperationTableTestD45CB9BB",
+                                      "Arn"
+                                    ]
+                                  }
+                                },
+                                {
+                                  "Action": [
+                                    "lambda:InvokeAsync",
+                                    "lambda:InvokeFunction"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "plusFunction0E5FEE53",
+                                      "Arn"
+                                    ]
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "multiplicationFunctionServiceRoleDefaultPolicy0E59E718",
+                            "roles": [
+                              {
+                                "Ref": "multiplicationFunctionServiceRoleB6482EA6"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.81.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.81.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.81.0"
+                }
+              },
+              "Code": {
+                "id": "Code",
+                "path": "MathOperationStack/multiplicationFunction/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "MathOperationStack/multiplicationFunction/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.81.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "MathOperationStack/multiplicationFunction/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.81.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.81.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "MathOperationStack/multiplicationFunction/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": "cdk-hnb659fds-assets-153065748672-eu-west-1",
+                      "s3Key": "f282ba85660d2ec9f99ddbc5e7d3ed9f3507be142f7313cc50344dfafbd85818.zip"
+                    },
+                    "role": {
+                      "Fn::GetAtt": [
+                        "multiplicationFunctionServiceRoleB6482EA6",
+                        "Arn"
+                      ]
+                    },
+                    "environment": {
+                      "variables": {
+                        "plusLambdaArn": {
+                          "Fn::GetAtt": [
+                            "plusFunction0E5FEE53",
+                            "Arn"
+                          ]
+                        },
+                        "minusLambdaArn": {
+                          "Fn::GetAtt": [
+                            "minusFunction2F01936A",
+                            "Arn"
+                          ]
+                        }
+                      }
+                    },
+                    "handler": "multiplicationFunction.lambda_handler",
+                    "runtime": "python3.9",
+                    "timeout": 30
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.81.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.81.0"
+            }
+          },
+          "divisionFunction": {
+            "id": "divisionFunction",
+            "path": "MathOperationStack/divisionFunction",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "MathOperationStack/divisionFunction/ServiceRole",
+                "children": {
+                  "ImportServiceRole": {
+                    "id": "ImportServiceRole",
+                    "path": "MathOperationStack/divisionFunction/ServiceRole/ImportServiceRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.81.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "MathOperationStack/divisionFunction/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.81.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "MathOperationStack/divisionFunction/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "MathOperationStack/divisionFunction/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:Query",
+                                    "dynamodb:Scan",
+                                    "dynamodb:UpdateItem"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "MathOperationTableTestD45CB9BB",
+                                      "Arn"
+                                    ]
+                                  }
+                                },
+                                {
+                                  "Action": [
+                                    "lambda:InvokeAsync",
+                                    "lambda:InvokeFunction"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "minusFunction2F01936A",
+                                      "Arn"
+                                    ]
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "divisionFunctionServiceRoleDefaultPolicy53289718",
+                            "roles": [
+                              {
+                                "Ref": "divisionFunctionServiceRole7CB3E965"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.81.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.81.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.81.0"
+                }
+              },
+              "Code": {
+                "id": "Code",
+                "path": "MathOperationStack/divisionFunction/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "MathOperationStack/divisionFunction/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.81.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "MathOperationStack/divisionFunction/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.81.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.81.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "MathOperationStack/divisionFunction/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": "cdk-hnb659fds-assets-153065748672-eu-west-1",
+                      "s3Key": "f282ba85660d2ec9f99ddbc5e7d3ed9f3507be142f7313cc50344dfafbd85818.zip"
+                    },
+                    "role": {
+                      "Fn::GetAtt": [
+                        "divisionFunctionServiceRole7CB3E965",
+                        "Arn"
+                      ]
+                    },
+                    "handler": "divisionFunction.lambda_handler",
+                    "runtime": "python3.9",
+                    "timeout": 30
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.81.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.81.0"
+            }
+          },
+          "exponentialFunction": {
+            "id": "exponentialFunction",
+            "path": "MathOperationStack/exponentialFunction",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "MathOperationStack/exponentialFunction/ServiceRole",
+                "children": {
+                  "ImportServiceRole": {
+                    "id": "ImportServiceRole",
+                    "path": "MathOperationStack/exponentialFunction/ServiceRole/ImportServiceRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.81.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "MathOperationStack/exponentialFunction/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.81.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "MathOperationStack/exponentialFunction/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "MathOperationStack/exponentialFunction/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:Query",
+                                    "dynamodb:Scan",
+                                    "dynamodb:UpdateItem"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "MathOperationTableTestD45CB9BB",
+                                      "Arn"
+                                    ]
+                                  }
+                                },
+                                {
+                                  "Action": [
+                                    "lambda:InvokeAsync",
+                                    "lambda:InvokeFunction"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "multiplicationFunction44611578",
+                                      "Arn"
+                                    ]
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "exponentialFunctionServiceRoleDefaultPolicy2A2052F8",
+                            "roles": [
+                              {
+                                "Ref": "exponentialFunctionServiceRole18057CE7"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.81.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.81.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.81.0"
+                }
+              },
+              "Code": {
+                "id": "Code",
+                "path": "MathOperationStack/exponentialFunction/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "MathOperationStack/exponentialFunction/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.81.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "MathOperationStack/exponentialFunction/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.81.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.81.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "MathOperationStack/exponentialFunction/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": "cdk-hnb659fds-assets-153065748672-eu-west-1",
+                      "s3Key": "f282ba85660d2ec9f99ddbc5e7d3ed9f3507be142f7313cc50344dfafbd85818.zip"
+                    },
+                    "role": {
+                      "Fn::GetAtt": [
+                        "exponentialFunctionServiceRole18057CE7",
+                        "Arn"
+                      ]
+                    },
+                    "environment": {
+                      "variables": {
+                        "multiplicationLambdaArn": {
+                          "Fn::GetAtt": [
+                            "multiplicationFunction44611578",
+                            "Arn"
+                          ]
+                        },
+                        "plusLambdaArn": {
+                          "Fn::GetAtt": [
+                            "plusFunction0E5FEE53",
+                            "Arn"
+                          ]
+                        },
+                        "minusLambdaArn": {
+                          "Fn::GetAtt": [
+                            "minusFunction2F01936A",
+                            "Arn"
+                          ]
+                        }
+                      }
+                    },
+                    "handler": "exponentialFunction.lambda_handler",
+                    "runtime": "python3.9",
+                    "timeout": 30
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.81.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.81.0"
+            }
+          },
+          "MathOperationAPI": {
+            "id": "MathOperationAPI",
+            "path": "MathOperationStack/MathOperationAPI",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "MathOperationStack/MathOperationAPI/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ApiGateway::RestApi",
+                  "aws:cdk:cloudformation:props": {
+                    "name": "MathOperationAPI"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.CfnRestApi",
+                  "version": "2.81.0"
+                }
+              },
+              "Deployment": {
+                "id": "Deployment",
+                "path": "MathOperationStack/MathOperationAPI/Deployment",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "MathOperationStack/MathOperationAPI/Deployment/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::ApiGateway::Deployment",
+                      "aws:cdk:cloudformation:props": {
+                        "restApiId": {
+                          "Ref": "MathOperationAPI9E796E57"
+                        },
+                        "description": "Automatically created by the RestApi construct"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.CfnDeployment",
+                      "version": "2.81.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.Deployment",
+                  "version": "2.81.0"
+                }
+              },
+              "DeploymentStage.prod": {
+                "id": "DeploymentStage.prod",
+                "path": "MathOperationStack/MathOperationAPI/DeploymentStage.prod",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "MathOperationStack/MathOperationAPI/DeploymentStage.prod/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::ApiGateway::Stage",
+                      "aws:cdk:cloudformation:props": {
+                        "restApiId": {
+                          "Ref": "MathOperationAPI9E796E57"
+                        },
+                        "deploymentId": {
+                          "Ref": "MathOperationAPIDeployment7EA6BA38b00a87e0886ea802101848be81dcc475"
+                        },
+                        "stageName": "prod"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.CfnStage",
+                      "version": "2.81.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.Stage",
+                  "version": "2.81.0"
+                }
+              },
+              "Endpoint": {
+                "id": "Endpoint",
+                "path": "MathOperationStack/MathOperationAPI/Endpoint",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.81.0"
+                }
+              },
+              "Default": {
+                "id": "Default",
+                "path": "MathOperationStack/MathOperationAPI/Default",
+                "children": {
+                  "summation": {
+                    "id": "summation",
+                    "path": "MathOperationStack/MathOperationAPI/Default/summation",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "MathOperationStack/MathOperationAPI/Default/summation/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
+                          "aws:cdk:cloudformation:props": {
+                            "parentId": {
+                              "Fn::GetAtt": [
+                                "MathOperationAPI9E796E57",
+                                "RootResourceId"
+                              ]
+                            },
+                            "pathPart": "summation",
+                            "restApiId": {
+                              "Ref": "MathOperationAPI9E796E57"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.CfnResource",
+                          "version": "2.81.0"
+                        }
+                      },
+                      "OPTIONS": {
+                        "id": "OPTIONS",
+                        "path": "MathOperationStack/MathOperationAPI/Default/summation/OPTIONS",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "MathOperationStack/MathOperationAPI/Default/summation/OPTIONS/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "httpMethod": "OPTIONS",
+                                "resourceId": {
+                                  "Ref": "MathOperationAPIsummation8D583DA4"
+                                },
+                                "restApiId": {
+                                  "Ref": "MathOperationAPI9E796E57"
+                                },
+                                "authorizationType": "NONE",
+                                "integration": {
+                                  "type": "MOCK",
+                                  "requestTemplates": {
+                                    "application/json": "{ statusCode: 200 }"
+                                  },
+                                  "integrationResponses": [
+                                    {
+                                      "statusCode": "204",
+                                      "responseParameters": {
+                                        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                                        "method.response.header.Access-Control-Allow-Origin": "'*'",
+                                        "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'"
+                                      }
+                                    }
+                                  ]
+                                },
+                                "methodResponses": [
+                                  {
+                                    "statusCode": "204",
+                                    "responseParameters": {
+                                      "method.response.header.Access-Control-Allow-Headers": true,
+                                      "method.response.header.Access-Control-Allow-Origin": true,
+                                      "method.response.header.Access-Control-Allow-Methods": true
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.81.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.81.0"
+                        }
+                      },
+                      "POST": {
+                        "id": "POST",
+                        "path": "MathOperationStack/MathOperationAPI/Default/summation/POST",
+                        "children": {
+                          "ApiPermission.MathOperationStackMathOperationAPI1E32C3C2.POST..summation": {
+                            "id": "ApiPermission.MathOperationStackMathOperationAPI1E32C3C2.POST..summation",
+                            "path": "MathOperationStack/MathOperationAPI/Default/summation/POST/ApiPermission.MathOperationStackMathOperationAPI1E32C3C2.POST..summation",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "plusFunction0E5FEE53",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:execute-api:eu-west-1:153065748672:",
+                                      {
+                                        "Ref": "MathOperationAPI9E796E57"
+                                      },
+                                      "/",
+                                      {
+                                        "Ref": "MathOperationAPIDeploymentStageprod6900F1BA"
+                                      },
+                                      "/POST/summation"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.81.0"
+                            }
+                          },
+                          "ApiPermission.Test.MathOperationStackMathOperationAPI1E32C3C2.POST..summation": {
+                            "id": "ApiPermission.Test.MathOperationStackMathOperationAPI1E32C3C2.POST..summation",
+                            "path": "MathOperationStack/MathOperationAPI/Default/summation/POST/ApiPermission.Test.MathOperationStackMathOperationAPI1E32C3C2.POST..summation",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "plusFunction0E5FEE53",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:execute-api:eu-west-1:153065748672:",
+                                      {
+                                        "Ref": "MathOperationAPI9E796E57"
+                                      },
+                                      "/test-invoke-stage/POST/summation"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.81.0"
+                            }
+                          },
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "MathOperationStack/MathOperationAPI/Default/summation/POST/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "httpMethod": "POST",
+                                "resourceId": {
+                                  "Ref": "MathOperationAPIsummation8D583DA4"
+                                },
+                                "restApiId": {
+                                  "Ref": "MathOperationAPI9E796E57"
+                                },
+                                "authorizationType": "NONE",
+                                "integration": {
+                                  "type": "AWS",
+                                  "uri": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/",
+                                        {
+                                          "Fn::GetAtt": [
+                                            "plusFunction0E5FEE53",
+                                            "Arn"
+                                          ]
+                                        },
+                                        "/invocations"
+                                      ]
+                                    ]
+                                  },
+                                  "integrationHttpMethod": "POST",
+                                  "integrationResponses": [
+                                    {
+                                      "statusCode": "200",
+                                      "responseParameters": {
+                                        "method.response.header.Access-Control-Allow-Origin": "'*'"
+                                      }
+                                    }
+                                  ]
+                                },
+                                "methodResponses": [
+                                  {
+                                    "statusCode": "200",
+                                    "responseParameters": {
+                                      "method.response.header.Access-Control-Allow-Origin": true
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.81.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.81.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.Resource",
+                      "version": "2.81.0"
+                    }
+                  },
+                  "subtraction": {
+                    "id": "subtraction",
+                    "path": "MathOperationStack/MathOperationAPI/Default/subtraction",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "MathOperationStack/MathOperationAPI/Default/subtraction/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
+                          "aws:cdk:cloudformation:props": {
+                            "parentId": {
+                              "Fn::GetAtt": [
+                                "MathOperationAPI9E796E57",
+                                "RootResourceId"
+                              ]
+                            },
+                            "pathPart": "subtraction",
+                            "restApiId": {
+                              "Ref": "MathOperationAPI9E796E57"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.CfnResource",
+                          "version": "2.81.0"
+                        }
+                      },
+                      "OPTIONS": {
+                        "id": "OPTIONS",
+                        "path": "MathOperationStack/MathOperationAPI/Default/subtraction/OPTIONS",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "MathOperationStack/MathOperationAPI/Default/subtraction/OPTIONS/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "httpMethod": "OPTIONS",
+                                "resourceId": {
+                                  "Ref": "MathOperationAPIsubtraction35AA3493"
+                                },
+                                "restApiId": {
+                                  "Ref": "MathOperationAPI9E796E57"
+                                },
+                                "authorizationType": "NONE",
+                                "integration": {
+                                  "type": "MOCK",
+                                  "requestTemplates": {
+                                    "application/json": "{ statusCode: 200 }"
+                                  },
+                                  "integrationResponses": [
+                                    {
+                                      "statusCode": "204",
+                                      "responseParameters": {
+                                        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                                        "method.response.header.Access-Control-Allow-Origin": "'*'",
+                                        "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'"
+                                      }
+                                    }
+                                  ]
+                                },
+                                "methodResponses": [
+                                  {
+                                    "statusCode": "204",
+                                    "responseParameters": {
+                                      "method.response.header.Access-Control-Allow-Headers": true,
+                                      "method.response.header.Access-Control-Allow-Origin": true,
+                                      "method.response.header.Access-Control-Allow-Methods": true
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.81.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.81.0"
+                        }
+                      },
+                      "POST": {
+                        "id": "POST",
+                        "path": "MathOperationStack/MathOperationAPI/Default/subtraction/POST",
+                        "children": {
+                          "ApiPermission.MathOperationStackMathOperationAPI1E32C3C2.POST..subtraction": {
+                            "id": "ApiPermission.MathOperationStackMathOperationAPI1E32C3C2.POST..subtraction",
+                            "path": "MathOperationStack/MathOperationAPI/Default/subtraction/POST/ApiPermission.MathOperationStackMathOperationAPI1E32C3C2.POST..subtraction",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "minusFunction2F01936A",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:execute-api:eu-west-1:153065748672:",
+                                      {
+                                        "Ref": "MathOperationAPI9E796E57"
+                                      },
+                                      "/",
+                                      {
+                                        "Ref": "MathOperationAPIDeploymentStageprod6900F1BA"
+                                      },
+                                      "/POST/subtraction"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.81.0"
+                            }
+                          },
+                          "ApiPermission.Test.MathOperationStackMathOperationAPI1E32C3C2.POST..subtraction": {
+                            "id": "ApiPermission.Test.MathOperationStackMathOperationAPI1E32C3C2.POST..subtraction",
+                            "path": "MathOperationStack/MathOperationAPI/Default/subtraction/POST/ApiPermission.Test.MathOperationStackMathOperationAPI1E32C3C2.POST..subtraction",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "minusFunction2F01936A",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:execute-api:eu-west-1:153065748672:",
+                                      {
+                                        "Ref": "MathOperationAPI9E796E57"
+                                      },
+                                      "/test-invoke-stage/POST/subtraction"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.81.0"
+                            }
+                          },
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "MathOperationStack/MathOperationAPI/Default/subtraction/POST/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "httpMethod": "POST",
+                                "resourceId": {
+                                  "Ref": "MathOperationAPIsubtraction35AA3493"
+                                },
+                                "restApiId": {
+                                  "Ref": "MathOperationAPI9E796E57"
+                                },
+                                "authorizationType": "NONE",
+                                "integration": {
+                                  "type": "AWS",
+                                  "uri": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/",
+                                        {
+                                          "Fn::GetAtt": [
+                                            "minusFunction2F01936A",
+                                            "Arn"
+                                          ]
+                                        },
+                                        "/invocations"
+                                      ]
+                                    ]
+                                  },
+                                  "integrationHttpMethod": "POST",
+                                  "integrationResponses": [
+                                    {
+                                      "statusCode": "200",
+                                      "responseParameters": {
+                                        "method.response.header.Access-Control-Allow-Origin": "'*'"
+                                      }
+                                    }
+                                  ]
+                                },
+                                "methodResponses": [
+                                  {
+                                    "statusCode": "200",
+                                    "responseParameters": {
+                                      "method.response.header.Access-Control-Allow-Origin": true
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.81.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.81.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.Resource",
+                      "version": "2.81.0"
+                    }
+                  },
+                  "multiplication": {
+                    "id": "multiplication",
+                    "path": "MathOperationStack/MathOperationAPI/Default/multiplication",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "MathOperationStack/MathOperationAPI/Default/multiplication/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
+                          "aws:cdk:cloudformation:props": {
+                            "parentId": {
+                              "Fn::GetAtt": [
+                                "MathOperationAPI9E796E57",
+                                "RootResourceId"
+                              ]
+                            },
+                            "pathPart": "multiplication",
+                            "restApiId": {
+                              "Ref": "MathOperationAPI9E796E57"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.CfnResource",
+                          "version": "2.81.0"
+                        }
+                      },
+                      "OPTIONS": {
+                        "id": "OPTIONS",
+                        "path": "MathOperationStack/MathOperationAPI/Default/multiplication/OPTIONS",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "MathOperationStack/MathOperationAPI/Default/multiplication/OPTIONS/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "httpMethod": "OPTIONS",
+                                "resourceId": {
+                                  "Ref": "MathOperationAPImultiplication34E7A432"
+                                },
+                                "restApiId": {
+                                  "Ref": "MathOperationAPI9E796E57"
+                                },
+                                "authorizationType": "NONE",
+                                "integration": {
+                                  "type": "MOCK",
+                                  "requestTemplates": {
+                                    "application/json": "{ statusCode: 200 }"
+                                  },
+                                  "integrationResponses": [
+                                    {
+                                      "statusCode": "204",
+                                      "responseParameters": {
+                                        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                                        "method.response.header.Access-Control-Allow-Origin": "'*'",
+                                        "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'"
+                                      }
+                                    }
+                                  ]
+                                },
+                                "methodResponses": [
+                                  {
+                                    "statusCode": "204",
+                                    "responseParameters": {
+                                      "method.response.header.Access-Control-Allow-Headers": true,
+                                      "method.response.header.Access-Control-Allow-Origin": true,
+                                      "method.response.header.Access-Control-Allow-Methods": true
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.81.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.81.0"
+                        }
+                      },
+                      "POST": {
+                        "id": "POST",
+                        "path": "MathOperationStack/MathOperationAPI/Default/multiplication/POST",
+                        "children": {
+                          "ApiPermission.MathOperationStackMathOperationAPI1E32C3C2.POST..multiplication": {
+                            "id": "ApiPermission.MathOperationStackMathOperationAPI1E32C3C2.POST..multiplication",
+                            "path": "MathOperationStack/MathOperationAPI/Default/multiplication/POST/ApiPermission.MathOperationStackMathOperationAPI1E32C3C2.POST..multiplication",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "multiplicationFunction44611578",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:execute-api:eu-west-1:153065748672:",
+                                      {
+                                        "Ref": "MathOperationAPI9E796E57"
+                                      },
+                                      "/",
+                                      {
+                                        "Ref": "MathOperationAPIDeploymentStageprod6900F1BA"
+                                      },
+                                      "/POST/multiplication"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.81.0"
+                            }
+                          },
+                          "ApiPermission.Test.MathOperationStackMathOperationAPI1E32C3C2.POST..multiplication": {
+                            "id": "ApiPermission.Test.MathOperationStackMathOperationAPI1E32C3C2.POST..multiplication",
+                            "path": "MathOperationStack/MathOperationAPI/Default/multiplication/POST/ApiPermission.Test.MathOperationStackMathOperationAPI1E32C3C2.POST..multiplication",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "multiplicationFunction44611578",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:execute-api:eu-west-1:153065748672:",
+                                      {
+                                        "Ref": "MathOperationAPI9E796E57"
+                                      },
+                                      "/test-invoke-stage/POST/multiplication"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.81.0"
+                            }
+                          },
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "MathOperationStack/MathOperationAPI/Default/multiplication/POST/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "httpMethod": "POST",
+                                "resourceId": {
+                                  "Ref": "MathOperationAPImultiplication34E7A432"
+                                },
+                                "restApiId": {
+                                  "Ref": "MathOperationAPI9E796E57"
+                                },
+                                "authorizationType": "NONE",
+                                "integration": {
+                                  "type": "AWS",
+                                  "uri": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/",
+                                        {
+                                          "Fn::GetAtt": [
+                                            "multiplicationFunction44611578",
+                                            "Arn"
+                                          ]
+                                        },
+                                        "/invocations"
+                                      ]
+                                    ]
+                                  },
+                                  "integrationHttpMethod": "POST",
+                                  "integrationResponses": [
+                                    {
+                                      "statusCode": "200",
+                                      "responseParameters": {
+                                        "method.response.header.Access-Control-Allow-Origin": "'*'"
+                                      }
+                                    }
+                                  ]
+                                },
+                                "methodResponses": [
+                                  {
+                                    "statusCode": "200",
+                                    "responseParameters": {
+                                      "method.response.header.Access-Control-Allow-Origin": true
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.81.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.81.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.Resource",
+                      "version": "2.81.0"
+                    }
+                  },
+                  "division": {
+                    "id": "division",
+                    "path": "MathOperationStack/MathOperationAPI/Default/division",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "MathOperationStack/MathOperationAPI/Default/division/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
+                          "aws:cdk:cloudformation:props": {
+                            "parentId": {
+                              "Fn::GetAtt": [
+                                "MathOperationAPI9E796E57",
+                                "RootResourceId"
+                              ]
+                            },
+                            "pathPart": "division",
+                            "restApiId": {
+                              "Ref": "MathOperationAPI9E796E57"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.CfnResource",
+                          "version": "2.81.0"
+                        }
+                      },
+                      "OPTIONS": {
+                        "id": "OPTIONS",
+                        "path": "MathOperationStack/MathOperationAPI/Default/division/OPTIONS",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "MathOperationStack/MathOperationAPI/Default/division/OPTIONS/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "httpMethod": "OPTIONS",
+                                "resourceId": {
+                                  "Ref": "MathOperationAPIdivisionBD481641"
+                                },
+                                "restApiId": {
+                                  "Ref": "MathOperationAPI9E796E57"
+                                },
+                                "authorizationType": "NONE",
+                                "integration": {
+                                  "type": "MOCK",
+                                  "requestTemplates": {
+                                    "application/json": "{ statusCode: 200 }"
+                                  },
+                                  "integrationResponses": [
+                                    {
+                                      "statusCode": "204",
+                                      "responseParameters": {
+                                        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                                        "method.response.header.Access-Control-Allow-Origin": "'*'",
+                                        "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'"
+                                      }
+                                    }
+                                  ]
+                                },
+                                "methodResponses": [
+                                  {
+                                    "statusCode": "204",
+                                    "responseParameters": {
+                                      "method.response.header.Access-Control-Allow-Headers": true,
+                                      "method.response.header.Access-Control-Allow-Origin": true,
+                                      "method.response.header.Access-Control-Allow-Methods": true
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.81.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.81.0"
+                        }
+                      },
+                      "POST": {
+                        "id": "POST",
+                        "path": "MathOperationStack/MathOperationAPI/Default/division/POST",
+                        "children": {
+                          "ApiPermission.MathOperationStackMathOperationAPI1E32C3C2.POST..division": {
+                            "id": "ApiPermission.MathOperationStackMathOperationAPI1E32C3C2.POST..division",
+                            "path": "MathOperationStack/MathOperationAPI/Default/division/POST/ApiPermission.MathOperationStackMathOperationAPI1E32C3C2.POST..division",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "divisionFunctionB6CF2A6A",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:execute-api:eu-west-1:153065748672:",
+                                      {
+                                        "Ref": "MathOperationAPI9E796E57"
+                                      },
+                                      "/",
+                                      {
+                                        "Ref": "MathOperationAPIDeploymentStageprod6900F1BA"
+                                      },
+                                      "/POST/division"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.81.0"
+                            }
+                          },
+                          "ApiPermission.Test.MathOperationStackMathOperationAPI1E32C3C2.POST..division": {
+                            "id": "ApiPermission.Test.MathOperationStackMathOperationAPI1E32C3C2.POST..division",
+                            "path": "MathOperationStack/MathOperationAPI/Default/division/POST/ApiPermission.Test.MathOperationStackMathOperationAPI1E32C3C2.POST..division",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "divisionFunctionB6CF2A6A",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:execute-api:eu-west-1:153065748672:",
+                                      {
+                                        "Ref": "MathOperationAPI9E796E57"
+                                      },
+                                      "/test-invoke-stage/POST/division"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.81.0"
+                            }
+                          },
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "MathOperationStack/MathOperationAPI/Default/division/POST/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "httpMethod": "POST",
+                                "resourceId": {
+                                  "Ref": "MathOperationAPIdivisionBD481641"
+                                },
+                                "restApiId": {
+                                  "Ref": "MathOperationAPI9E796E57"
+                                },
+                                "authorizationType": "NONE",
+                                "integration": {
+                                  "type": "AWS",
+                                  "uri": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/",
+                                        {
+                                          "Fn::GetAtt": [
+                                            "divisionFunctionB6CF2A6A",
+                                            "Arn"
+                                          ]
+                                        },
+                                        "/invocations"
+                                      ]
+                                    ]
+                                  },
+                                  "integrationHttpMethod": "POST",
+                                  "integrationResponses": [
+                                    {
+                                      "statusCode": "200",
+                                      "responseParameters": {
+                                        "method.response.header.Access-Control-Allow-Origin": "'*'"
+                                      }
+                                    }
+                                  ]
+                                },
+                                "methodResponses": [
+                                  {
+                                    "statusCode": "200",
+                                    "responseParameters": {
+                                      "method.response.header.Access-Control-Allow-Origin": true
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.81.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.81.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.Resource",
+                      "version": "2.81.0"
+                    }
+                  },
+                  "exponential": {
+                    "id": "exponential",
+                    "path": "MathOperationStack/MathOperationAPI/Default/exponential",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "MathOperationStack/MathOperationAPI/Default/exponential/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
+                          "aws:cdk:cloudformation:props": {
+                            "parentId": {
+                              "Fn::GetAtt": [
+                                "MathOperationAPI9E796E57",
+                                "RootResourceId"
+                              ]
+                            },
+                            "pathPart": "exponential",
+                            "restApiId": {
+                              "Ref": "MathOperationAPI9E796E57"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.CfnResource",
+                          "version": "2.81.0"
+                        }
+                      },
+                      "OPTIONS": {
+                        "id": "OPTIONS",
+                        "path": "MathOperationStack/MathOperationAPI/Default/exponential/OPTIONS",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "MathOperationStack/MathOperationAPI/Default/exponential/OPTIONS/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "httpMethod": "OPTIONS",
+                                "resourceId": {
+                                  "Ref": "MathOperationAPIexponential7438FB21"
+                                },
+                                "restApiId": {
+                                  "Ref": "MathOperationAPI9E796E57"
+                                },
+                                "authorizationType": "NONE",
+                                "integration": {
+                                  "type": "MOCK",
+                                  "requestTemplates": {
+                                    "application/json": "{ statusCode: 200 }"
+                                  },
+                                  "integrationResponses": [
+                                    {
+                                      "statusCode": "204",
+                                      "responseParameters": {
+                                        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                                        "method.response.header.Access-Control-Allow-Origin": "'*'",
+                                        "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'"
+                                      }
+                                    }
+                                  ]
+                                },
+                                "methodResponses": [
+                                  {
+                                    "statusCode": "204",
+                                    "responseParameters": {
+                                      "method.response.header.Access-Control-Allow-Headers": true,
+                                      "method.response.header.Access-Control-Allow-Origin": true,
+                                      "method.response.header.Access-Control-Allow-Methods": true
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.81.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.81.0"
+                        }
+                      },
+                      "POST": {
+                        "id": "POST",
+                        "path": "MathOperationStack/MathOperationAPI/Default/exponential/POST",
+                        "children": {
+                          "ApiPermission.MathOperationStackMathOperationAPI1E32C3C2.POST..exponential": {
+                            "id": "ApiPermission.MathOperationStackMathOperationAPI1E32C3C2.POST..exponential",
+                            "path": "MathOperationStack/MathOperationAPI/Default/exponential/POST/ApiPermission.MathOperationStackMathOperationAPI1E32C3C2.POST..exponential",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "exponentialFunctionAF392EE9",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:execute-api:eu-west-1:153065748672:",
+                                      {
+                                        "Ref": "MathOperationAPI9E796E57"
+                                      },
+                                      "/",
+                                      {
+                                        "Ref": "MathOperationAPIDeploymentStageprod6900F1BA"
+                                      },
+                                      "/POST/exponential"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.81.0"
+                            }
+                          },
+                          "ApiPermission.Test.MathOperationStackMathOperationAPI1E32C3C2.POST..exponential": {
+                            "id": "ApiPermission.Test.MathOperationStackMathOperationAPI1E32C3C2.POST..exponential",
+                            "path": "MathOperationStack/MathOperationAPI/Default/exponential/POST/ApiPermission.Test.MathOperationStackMathOperationAPI1E32C3C2.POST..exponential",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "exponentialFunctionAF392EE9",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:execute-api:eu-west-1:153065748672:",
+                                      {
+                                        "Ref": "MathOperationAPI9E796E57"
+                                      },
+                                      "/test-invoke-stage/POST/exponential"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.81.0"
+                            }
+                          },
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "MathOperationStack/MathOperationAPI/Default/exponential/POST/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "httpMethod": "POST",
+                                "resourceId": {
+                                  "Ref": "MathOperationAPIexponential7438FB21"
+                                },
+                                "restApiId": {
+                                  "Ref": "MathOperationAPI9E796E57"
+                                },
+                                "authorizationType": "NONE",
+                                "integration": {
+                                  "type": "AWS",
+                                  "uri": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/",
+                                        {
+                                          "Fn::GetAtt": [
+                                            "exponentialFunctionAF392EE9",
+                                            "Arn"
+                                          ]
+                                        },
+                                        "/invocations"
+                                      ]
+                                    ]
+                                  },
+                                  "integrationHttpMethod": "POST",
+                                  "integrationResponses": [
+                                    {
+                                      "statusCode": "200",
+                                      "responseParameters": {
+                                        "method.response.header.Access-Control-Allow-Origin": "'*'"
+                                      }
+                                    }
+                                  ]
+                                },
+                                "methodResponses": [
+                                  {
+                                    "statusCode": "200",
+                                    "responseParameters": {
+                                      "method.response.header.Access-Control-Allow-Origin": true
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.81.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.81.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.Resource",
+                      "version": "2.81.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.ResourceBase",
+                  "version": "2.81.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_apigateway.RestApi",
+              "version": "2.81.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "MathOperationStack/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "MathOperationStack/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.81.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.2.33"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "MathOperationStack/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.81.0"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "MathOperationStack/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.81.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.81.0"
+        }
+      },
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.2.33"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.81.0"
+    }
+  }
+}
