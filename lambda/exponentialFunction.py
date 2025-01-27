@@ -36,6 +36,11 @@ def lambda_handler(event, context):
             'statusCode': 200,
             'body': json.dumps('Negative exponent provided: exponent '+str(exponent))
         }
+    if base>10 and exponent>10:
+        return {
+            'statusCodde': 200,
+            'body': json.dumps('Values for base and exponent must be 10 or below.')
+        }
 
 
     highExponent=0

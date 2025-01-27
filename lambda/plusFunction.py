@@ -40,25 +40,37 @@ def lambda_handler(event, context):
     length_rs=len(rs['Items'])
     if length_rs>0:
         mathResult=rs['Items'][0]['result']
-        return {
-        'statusCode': 200,
-        'result': mathResult,
-        'body': json.dumps('Your result is ' + str(mathResult))
-        }
     else:
-        # A prerecorded result did not exist. We check if operand1+0 exists 
-        # If not, we add this item (ADD#operand1,0,operand1)
-        rs=table.query(KeyConditionExpression=Key('operation').eq(operation)&Key('operand2').eq(0))
-        length_rs=len(rs['Items'])
-        if length_rs==0:
-            rs=table.put_item(
+        # A prerecorded result did not exist. Hence, we compute the result, anmd add it to the
+        # DynamoDB Table.
+        mathResult=operand1+operand2
+        rs=table.put_item(
                 Item={
                     'operation': operation,
-                    'operand2': 0,
-                    'result': operand1,
+                    'operand2': operand2,
+                    'result': mathResult,
                     'upd_time': now
                 }
         )
+    return {
+        'statusCode': 200,
+        'result': mathResult,
+        'body': json.dumps('Your result is ' + str(mathResult))
+    }
+
+        # A prerecorded result did not exist. We check if operand1+0 exists 
+        # If not, we add this item (ADD#operand1,0,operand1)
+        #rs=table.query(KeyConditionExpression=Key('operation').eq(operation)&Key('operand2').eq(0))
+        #length_rs=len(rs['Items'])
+        #if length_rs==0:
+        #    rs=table.put_item(
+        #        Item={
+        #            'operation': operation,
+        #            'operand2': 0,
+        #            'result': operand1,
+        #            'upd_time': now
+        #        }
+        #)
     # Now we know the following
     # This item (ADD#operand1,0,operand1) exixts
     # Items up to (ADD#operand1,i,operand1+i) may exist, up to operand1+i<operand2

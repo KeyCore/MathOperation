@@ -109,7 +109,8 @@ def lambda_handler(event, context):
     else:
         # If operand2 is negative, look up the lowest factor recorded as being multiplied to operand1, in the table
         # (MULTIPLY#operand1, lowFactor, result)
-        rs=table.query(KeyConditionExpression=Key('operation').eq(operation),ScanIndexForward=True, Limit=1)    
+        rs=table.query(KeyConditionExpression=Key('operation').eq(operation),ScanIndexForward=True, Limit=1)  
+        print(rs)  
         lowFactor=rs['Items'][0]['operand2']
         mathResult=rs['Items'][0]['result']
         # Fill the gap between lowFactor and operand2, by inserting items in the table

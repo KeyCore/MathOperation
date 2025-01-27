@@ -142,8 +142,11 @@ class MathOperationStack(Stack):
         
         multiplicationFunction.add_to_role_policy(MathDynamoDBPolicy)
         multiplicationFunction.add_to_role_policy(plusInvokePolicy)
+        multiplicationFunction.add_to_role_policy(minusInvokePolicy)
+        
         divisionFunction.add_to_role_policy(MathDynamoDBPolicy)
         divisionFunction.add_to_role_policy(minusInvokePolicy)
+        
         exponentialFunction.add_to_role_policy(MathDynamoDBPolicy)
         exponentialFunction.add_to_role_policy(multiplicationInvokePolicy)
 

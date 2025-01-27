@@ -69,19 +69,10 @@
                 body: raw,
                 redirect: 'follow'
             };
-            if(operation==7){
-                //alert('Begin1')
-                apigClient.exponentPost(null, raw)
-                .then(response=>alert(response.data.body))
-                //.then(response=>alert(JSON.stringify(response.data.body)))
-                //alert('End1');
-            }
-            else if(operation==0){
+            if(operation==0){
                 // make API call with parameters and use promises to get response
-                fetch("https://c5l46wmurc.execute-api.eu-west-1.amazonaws.com/dev/exponent", requestOptions)
-                .then(response => response.text())
-                .then(result => alert(JSON.parse(result).body))
-                .catch(error => console.log('error', error));
+                apigClient.exponentialPost(null, raw)
+                .then(response=>alert(response.data.body))
             }
             else if(operation==1){
                 // make API call with parameters and use promises to get response
