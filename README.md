@@ -1,5 +1,10 @@
 
-# Welcome to your CDK Python project!
+# Welcome to the Math Operation Project, featuring:
+
+## Accumulating Math operations using DynamoDB Single Table Design.
+## Frontend based on a generated SDK for Lambda REST API
+
+Fasten your seatbelt, this is going to be fun!
 
 This is a blank project for CDK development with Python.
 
