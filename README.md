@@ -45,7 +45,7 @@ In the same manner we may reuse subresults for divison. If we have stored, in Dy
 
 ### DynamoDB design
 
-- Partition key: OPERATION#operand1 (String)
+- Partition key: *OPERATION#operand1* (String)
 - Sort Key: operand2 (Number)
 
 Additional attributes: 
@@ -54,96 +54,43 @@ Additional attributes:
 
 Examples of items:
 
-1
-
-
-
-operation (String)
-	
-operand2 (Number)
-	
-result
-	
-upd_time
-
-operation (String)
-	
-operand2 (Number)
-	
-result
-	
-upd_time
-
-ADD#0
-1
-1
-Wed, 29 Jan 2025 14:55:45 +0000
-ADD#0
-6
-6
-Wed, 29 Jan 2025 14:55:47 +0000
-ADD#0
-36
-36
-Wed, 29 Jan 2025 14:56:43 +0000
-ADD#1
-1
-2
-Wed, 29 Jan 2025 14:55:46 +0000
-ADD#108
-36
-144
-Wed, 29 Jan 2025 14:56:43 +0000
-ADD#12
-6
-18
-Wed, 29 Jan 2025 14:55:47 +0000
-ADD#144
-36
-180
-Wed, 29 Jan 2025 14:56:43 +0000
-ADD#18
-6
-24
-Wed, 29 Jan 2025 14:55:47 +0000
-ADD#180
-36
-216
-Wed, 29 Jan 2025 14:56:43 +0000
-ADD#2
-1
-3
-Wed, 29 Jan 2025 14:55:46 +0000
-ADD#24
-6
-30
-Wed, 29 Jan 2025 14:55:47 +0000
-
-
-ADD#3
-1
-4
-Wed, 29 Jan 2025 14:55:46 +0000
-ADD#30
-6
-36
-Wed, 29 Jan 2025 14:55:47 +0000
-ADD#36
-36
-72
-Wed, 29 Jan 2025 14:56:43 +0000
-ADD#4
-1
-5
-Wed, 29 Jan 2025 14:55:46 +0000
-ADD#5
-1
-6
-Wed, 29 Jan 2025 14:55:46 +0000
-ADD#6
-6
-12
-Wed, 29 Jan 2025 14:55:47 +0000
+| ---	| --- | --- |
+| operation | operand2 | result | upd_time |
+| ---	| --- | --- |
+| ADD#0 | 1 | 1 |Wed, 29 Jan 2025 14:55:45 +0000 |
+| ---	| --- | --- |
+| ADD#0 | 6 | 6 | Wed, 29 Jan 2025 14:55:47 +0000 |
+| ---	| --- | --- |
+| ADD#0 | 36 | 36 | Wed, 29 Jan 2025 14:56:43 +0000 |
+| ---	| --- | --- |
+| ADD#1 | 1 | 2 | Wed, 29 Jan 2025 14:55:46 +0000 |
+| ---	| --- | --- |
+| ADD#108 | 36 | 144 | Wed, 29 Jan 2025 14:56:43 +0000 |
+| ---	| --- | --- |
+| ADD#12 | 6 | 18 | Wed, 29 Jan 2025 14:55:47 +0000 |
+| ---	| --- | --- |
+| ADD#144 | 36 | 180 | Wed, 29 Jan 2025 14:56:43 +0000 |
+| ---	| --- | --- |
+| ADD#18 | 6 | 24 | Wed, 29 Jan 2025 14:55:47 +0000 |
+| ---	| --- | --- |
+| ADD#180 | 36 | 216 | Wed, 29 Jan 2025 14:56:43 +0000 |
+| ---	| --- | --- |
+| ADD#2 | 1 | 3 | Wed, 29 Jan 2025 14:55:46 +0000 |
+| ---	| --- | --- |
+| ADD#24 | 6 | 30 | Wed, 29 Jan 2025 14:55:47 +0000 |
+| ---	| --- | --- |
+| ADD#3 | 1 | 4 | Wed, 29 Jan 2025 14:55:46 +0000 |
+| ---	| --- | --- |
+| ADD#30 | 6 | 36 | Wed, 29 Jan 2025 14:55:47 +0000 |
+| ---	| --- | --- |
+| ADD#36 | 36 | 72 | Wed, 29 Jan 2025 14:56:43 +0000 |
+| ---	| --- | --- |
+| ADD#4 | 1 | 5 | Wed, 29 Jan 2025 14:55:46 +0000 |
+| ---	| --- | --- |
+| ADD#5 | 1 | 6 | Wed, 29 Jan 2025 14:55:46 +0000 |
+| ---	| --- | --- |
+| ADD#6 | 6 | 12 | Wed, 29 Jan 2025 14:55:47 +0000 |
+| ---	| --- | --- |
 
 
 
