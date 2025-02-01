@@ -3,13 +3,14 @@
 
 ### Background and Motivation
 
+This project builds a serverless web applicaion which can compute the five arithmetic operations summation, subtraction, multiplication, divison and exponential lifting, using a principle of re-using prerecorded subresults in a DynamoDB table with a strict single table design approach. 
 
-This project builds an applicaion which can perform the five arithmeic operations summation, subtraction, multiplication, divison and exponential lifting. Common for these five operators is that they are binary, i. e. they take two operands and produce a result. Hence, the general form is:
+Common for the five operators is that they are binary, i. e. they take two operands and produce a result. Hence, the general form is:
 
 <center>
 OPERAND1 OPERATOR OPERAND2 = RESULT, 
 </center>
-**
+
 
 where **OPERAND1**, **OPERAND2** and **RESULT** are numbers, and **OPERATOR** is one of +,-,*,/ and ^
 
@@ -25,7 +26,9 @@ Examples:
 
 - 6^3 = 216
 
- Assume we have only summation (+) and subtraction (-), we would still be able to implement the remaining three oprators. Multiplication, for instance, is repeated summation. 6*3 (six times three), means 6+6+6, and slso 3+3+3+3+3+3, both of which yields 18.
+Now, in this project we are not going to use the built in arithmetic capabilities of common programming languages. Instead, we ae going to implement them using lower operators.
+
+To see this, assume we have only summation (+) and subtraction (-). Here, we would still be able to implement the remaining three operators. Multiplication, for instance, is repeated summation. 6*3 (six times three), means 6+6+6, and slso 3+3+3+3+3+3, both of which yields 18.
 
 - 6*3 = 6 + 6 + 6 (also 6*3 equals 3+3+3+3+3+3+3).
 
@@ -40,7 +43,7 @@ In the same fashion, exponentials may be computed as repeated multiplication. 6^
 In this Math Operation project we will replace:
 - multiplication by repeated summation
 - division by repeated subtraction
-- exponential computation by repeated multiplication
+- exponential computation by repeated multiplication (multiplication which is replaced by repeated summation)
 
 The front end programming language in browsers, which is Javascript, of course enables each of the five operators (+,-,*,/,^). However, for the sake of this project let us insist on the following limitations:
 
