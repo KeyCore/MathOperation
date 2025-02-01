@@ -73,9 +73,13 @@ OPERATION = {SUMMATION, SUBTRACTION, MUTIPLICATION, DIVISION, EXPONENTIAL}
 Examples: 
 
 The item (SUMMATION#6, 3, 9, 12-01-2025) means that it is recorded that 6+3 is 9, and that this computation was done on Jan 12, 2025.
+
 The item (SUBTRACTION#6, 3, 3, 11-01-2025) means that it is recorded that 6-3 is 3, and that this computation was done on Jan 11, 2025.
+
 The item (MULTIPLICATION#6, 3, 18, 12-01-2025) means that it is recorded that 6*3 is 18, and that this computation was done on Jan 12, 2025.
+
 The item (DIVISIONION#6, 3, 2, 10-01-2025) means that it is recorded that 6/3 is 2, and that this computation was done on Jan 10, 2025.
+
 The item (EXPONENTIAL#6, 3, 216, 12-01-2025) means that it is recorded that 6^3 is 216, and that this computation was done on Jan 12, 2025.
 
 In this way we can see that we may use a single table, in DynamoDB, to represent the five arithmetic operations. 
