@@ -99,8 +99,11 @@ Let us see an example of the usage of a prerecorded subresult. Assume we wish to
 - Finally, what happens if no prerecorded result for EXPONENTIAL#6 exists? In other words, what happens if no exponential with base 6 has been computed earlier? In this case the algorithm will insert these items in the DynamoDB table:
 
 (EXPONENTIAL#6, 0,   1)
+
 (EXPONENTIAL#6, 1,   6)
+
 (EXPONENTIAL#6, 2,  36)
+
 (EXPONENTIAL#6, 3, 216)
 
 These four items will now serve the Math Operation application in these two ways: Any exponential with base 6 and an exponent being three or below may be looked up directly. And, any exponential with base 6 and an exponent being above three may be computed using the prerecorded subresult in the "highest" among the four items namely (EXPONENTIAL#6, 3, 216).
