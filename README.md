@@ -1,12 +1,17 @@
 
-# Welcome to the Math Operation - a learning project for serverless web applications
-## Storing and resuing results of arithmetic operations with DynamoDB Single Table Design
+# Math Operation Project - a way to learn about serverless web applications
 
 ### Background and Motivation
 
-This project builds an applicaion which can perform the five arithmeic operations summation, subtraction, multiplication, divison and exponential lifting. Common for these five operators is that they are binary, i. e. they take two operands and produce a result. 
 
-operand1 operator operand2 = result 
+This project builds an applicaion which can perform the five arithmeic operations summation, subtraction, multiplication, divison and exponential lifting. Common for these five operators is that they are binary, i. e. they take two operands and produce a result. Hence, the general form is:
+
+<center>
+OPERAND1 OPERATOR OPERAND2 = RESULT, 
+</center>
+**
+
+where **OPERAND1**, **OPERAND2** and **RESULT** are numbers, and **OPERATOR** is one of +,-,*,/ and ^
 
 Examples:
 
@@ -20,13 +25,22 @@ Examples:
 
 - 6^3 = 216
 
- Assume we have only summation (+) and subtraction (-), we would still be able to implement the remaining three oprators. Multiplication, for instance, is a repetition of summation. Division is a repetition of 
+ Assume we have only summation (+) and subtraction (-), we would still be able to implement the remaining three oprators. Multiplication, for instance, is repeated summation. 6*3 (six times three), means 6+6+6, and slso 3+3+3+3+3+3, both of which yields 18.
 
 - 6*3 = 6 + 6 + 6 (also 6*3 equals 3+3+3+3+3+3+3).
 
+Division is repeated subtraction of one number from another, while counting how many times it ca be done. 6/3 (6 divided by three) for instance  means asking, how many times may 3 be drawn from 6, and the answer is 2.
+
 - 6 / 3 = How many times 3 may be subtracted from 6 before reaching 0, which is 2.
 
-- 6^3 = 6 * 6^2 (Exponential can be defined recursively, 6^0=1).
+In the same fashion, exponentials may be computed as repeated multiplication. 6^3 for instance, means 6*6*6. 
+
+- 6^3 = 6 * 6^2. Exponentials can be defined recursively, by noting that the bottom element is 6^0=1.
+
+In this Math Operation project we will replace:
+- multiplication by repeated summation
+- division by repeated subtraction
+- exponential computation by repeated multiplication
 
 The front end programming language in browsers, which is Javascript, of course enables each of the five operators (+,-,*,/,^). However, for the sake of this project let us insist on the following limitations:
 
@@ -45,6 +59,8 @@ In the same manner we may reuse subresults for divison. If we have stored, in Dy
 
 ### DynamoDB design
 
+We create a DynamoDB table, MathOperationTable, with a composite primary key, as follows:
+
 - Partition key: *OPERATION#operand1* (String)
 - Sort Key: operand2 (Number)
 
@@ -52,45 +68,60 @@ Additional attributes:
 - result (Number)
 - upd_time (string)
 
+OPERATION = {SUMMATION, SUBTRACTION, MUTIPLICATION, DIVISION, EXPONENTIAL}
+
+Examples: 
+
+The item (SUMMATION#6, 3, 9, 12-01-2025) means that it is recorded that 6+3 is 9, and that this computation was done on Jan 12, 2025.
+The item (SUBTRACTION#6, 3, 3, 11-01-2025) means that it is recorded that 6-3 is 3, and that this computation was done on Jan 11, 2025.
+The item (MULTIPLICATION#6, 3, 18, 12-01-2025) means that it is recorded that 6*3 is 18, and that this computation was done on Jan 12, 2025.
+The item (DIVISIONION#6, 3, 2, 10-01-2025) means that it is recorded that 6/3 is 2, and that this computation was done on Jan 10, 2025.
+The item (EXPONENTIAL#6, 3, 216, 12-01-2025) means that it is recorded that 6^3 is 216, and that this computation was done on Jan 12, 2025.
+
+In this way we can see that we may use a single table, in DynamoDB, to represent the five arithmetic operations. 
+
+### Subresults - meaning and usage
+
+With the definition above, we will be able to represent arithmetic operations in such a way that:
+1. Existing prerecorded results can be looked up fast. 
+2. If a prerecorded result does not exist, then the most appropiate prerecorded subresult mey be effectively identified, and applied in the computation.
+
+Let us see an example of the usage of a prerecorded subresult. Assume we wish to compute the exponential 6^3. 
+- First, if an item with partition key 'EXPONENTIAL#6' and sort key of 3, exists then the result may be looked up and returned directly. 
+- But, if such an item does not exist, then we will try to identify the "highest possible prerecorded subresult". Now, what do we mean by the "highest possible prerecorded subresult"? With that we mean the item with partition key 'EXPONENTIAL#6' and then the hightest possible value for the sort key, if such an item exists. Hence, if f. inst an item with partition key 'EXPONENTIAL#6' and sort key 2 exixts, then we will look up that item, note its result, which is 36 (6^2 is 36), and then use that result onwards, multiplying it by 6, obtaining the final result, which is then 216. 
+- Finally, what happens if no prerecorded result for EXPONENTIAL#6 exists? In other words, what happens if no exponential with base 6 has been computed earlier? In this case the algorithm will insert these items in the DynamoDB table:
+
+(EXPONENTIAL#6, 0,   1)
+(EXPONENTIAL#6, 1,   6)
+(EXPONENTIAL#6, 2,  36)
+(EXPONENTIAL#6, 3, 216)
+
+These four items will now serve the Math Operation application in these two ways: Any exponential with base 6 and an exponent being three or below may be looked up directly. And, any exponential with base 6 and an exponent being above three may be computed using the prerecorded subresult in the "highest" among the four items namely (EXPONENTIAL#6, 3, 216).
+
+
+
 Examples of items:
 
-| ---	| --- | --- | ---|
 | operation | operand2 | result | upd_time |
 | ---	| --- | --- | ---|
-| ADD#0 | 1 | 1 |Wed, 29 Jan 2025 14:55:45 +0000 |
-| ---	| --- | --- | ---|
-| ADD#0 | 6 | 6 | Wed, 29 Jan 2025 14:55:47 +0000 |
-| ---	| --- | --- | ---|
-| ADD#0 | 36 | 36 | Wed, 29 Jan 2025 14:56:43 +0000 |
-| ---	| --- | --- | ---|
-| ADD#1 | 1 | 2 | Wed, 29 Jan 2025 14:55:46 +0000 |
-| ---	| --- | --- | ---|
-| ADD#108 | 36 | 144 | Wed, 29 Jan 2025 14:56:43 +0000 |
-| ---	| --- | --- | ---|
-| ADD#12 | 6 | 18 | Wed, 29 Jan 2025 14:55:47 +0000 |
-| ---	| --- | --- | ---|
-| ADD#144 | 36 | 180 | Wed, 29 Jan 2025 14:56:43 +0000 |
-| ---	| --- | --- | ---|
-| ADD#18 | 6 | 24 | Wed, 29 Jan 2025 14:55:47 +0000 |
-| ---	| --- | --- | ---|
-| ADD#180 | 36 | 216 | Wed, 29 Jan 2025 14:56:43 +0000 |
-| ---	| --- | --- | ---|
-| ADD#2 | 1 | 3 | Wed, 29 Jan 2025 14:55:46 +0000 |
-| ---	| --- | --- | ---|
-| ADD#24 | 6 | 30 | Wed, 29 Jan 2025 14:55:47 +0000 |
-| ---	| --- | --- | ---|
-| ADD#3 | 1 | 4 | Wed, 29 Jan 2025 14:55:46 +0000 |
-| ---	| --- | --- | ---|
-| ADD#30 | 6 | 36 | Wed, 29 Jan 2025 14:55:47 +0000 |
-| ---	| --- | --- | ---|
-| ADD#36 | 36 | 72 | Wed, 29 Jan 2025 14:56:43 +0000 |
-| ---	| --- | --- | ---|
-| ADD#4 | 1 | 5 | Wed, 29 Jan 2025 14:55:46 +0000 |
-| ---	| --- | --- | ---|
-| ADD#5 | 1 | 6 | Wed, 29 Jan 2025 14:55:46 +0000 |
-| ---	| --- | --- | ---|
-| ADD#6 | 6 | 12 | Wed, 29 Jan 2025 14:55:47 +0000 |
-| ---	| --- | --- | ---|
+| **ADD#0** | 1 | 1 |Wed, 29 Jan 2025 14:55:45 +0000 |
+| **ADD#0** | 6 | 6 | Wed, 29 Jan 2025 14:55:47 +0000 |
+| **ADD#0** | 36 | 36 | Wed, 29 Jan 2025 14:56:43 +0000 |
+| **ADD#1** | 1 | 2 | Wed, 29 Jan 2025 14:55:46 +0000 |
+| **ADD#108** | 36 | 144 | Wed, 29 Jan 2025 14:56:43 +0000 |
+| **ADD#12** | 6 | 18 | Wed, 29 Jan 2025 14:55:47 +0000 |
+| **ADD#144** | 36 | 180 | Wed, 29 Jan 2025 14:56:43 +0000 |
+| **ADD#18** | 6 | 24 | Wed, 29 Jan 2025 14:55:47 +0000 |
+| **ADD#180** | 36 | 216 | Wed, 29 Jan 2025 14:56:43 +0000 |
+| **ADD#2** | 1 | 3 | Wed, 29 Jan 2025 14:55:46 +0000 |
+| **ADD#24** | 6 | 30 | Wed, 29 Jan 2025 14:55:47 +0000 |
+| **ADD#3** | 1 | 4 | Wed, 29 Jan 2025 14:55:46 +0000 |
+| **ADD#30** | 6 | 36 | Wed, 29 Jan 2025 14:55:47 +0000 |
+| **ADD#36** | 36 | 72 | Wed, 29 Jan 2025 14:56:43 +0000 |
+| **ADD#4** | 1 | 5 | Wed, 29 Jan 2025 14:55:46 +0000 |
+| **ADD#5** | 1 | 6 | Wed, 29 Jan 2025 14:55:46 +0000 |
+| **ADD#6** | 6 | 12 | Wed, 29 Jan 2025 14:55:47 +0000 |
+
 
 
 
