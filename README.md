@@ -1,5 +1,5 @@
 
-# Math Operation Project - learning serverless web applications and DynamoDB Single Table Design
+# Math Operation Project - s personal learning project for serverless web applications and DynamoDB Single Table Design
 
 AUTHOR: Kåre J. Kristoffersen, Cloud2@Denmark  
 DATE: Feb 2nd, 2025  
@@ -11,7 +11,11 @@ This project builds a serverless web application which can compute arithmetic op
 
 The purpose of setting out for this project was to strengten my skills in a couple of areas within AWS. It should be understood literally, this project was not done with the purpose of hoping that anyone will be using the tiny brower app for any real purpose. But it can use parts of it feel free. To cut it out clearly, I did it alone as a learning project for myself. 
 
-The focur areas that I had before this project were these:  
+### A personal Learning project 
+
+For me, this is a learning project!
+
+The learning points I had in mind for this project were these:  
 - DynamoDB: Obtain a better understanding DynamoDB Single-Table Design, and also programming using the DynamoDB boto3 API, in this project I choose python.
 - CDK scripting: After an earlier attempt to develop a CORS enabled API in CDK, in this project I finally succeeded. Also, in this project, I gained some valuable experience in setting up IAM policies and roles.
 - Frontend and Javascript: In 1997 I deveoped a purely static HTML site for a sports club. Yes, hand coded hypertext. That is more or less my front-end experience. Here, In this project, I ony a tiny little to that knowedge, but at east it can retrieve inputs and alert the result back to the user in the browser.  
