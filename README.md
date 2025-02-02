@@ -1,15 +1,13 @@
 
 # Math Operation Project - learning serverless web applications and DynamoDB Single Table Design
 
-## This description is still in progress
-
 AUTHOR: Kåre J. Kristoffersen, Cloud2@Denmark  
 DATE: Feb 2nd, 2025  
 LOCATION: Copenhagen,Denmark  
 
 ### Background and Motivation
 
-This project builds a serverless web applicaion which can compute arithmetic operations using recursion and a principle of re-using prerecorded subresults in a DynamoDB table with a strict single table design approach. 
+This project builds a serverless web application which can compute arithmetic operations using recursion and a principle of re-using prerecorded subresults in a DynamoDB table with a strict single table design approach.  
 
 The purpose of setting out for this project was to strengten my skills in a couple of areas within AWS. It should be understood literally, this project was not done with the purpose of hoping that anyone will be using the tiny brower app for any real purpose. But it can use parts of it feel free. To cut it out clearly, I did it alone as a learning project for myself. 
 
