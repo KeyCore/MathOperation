@@ -1,16 +1,33 @@
 
-# Math Operation Project - a way to learn about serverless web applications
+# Math Operation Project - learning serverless web applications and DynamoDB Single Table Design
+
+## This description is still in progress
+
+AUTHOR: Kåre J. Kristoffersen, Cloud2@Denmark  
+DATE: Feb 2nd, 2025  
+LOCATION: Copenhagen,Denmark  
 
 ### Background and Motivation
 
-This project builds a serverless web applicaion which can compute the five arithmetic operations summation, subtraction, multiplication, divison and exponential lifting, using a principle of re-using prerecorded subresults in a DynamoDB table with a strict single table design approach. 
+This project builds a serverless web applicaion which can compute arithmetic operations using recursion and a principle of re-using prerecorded subresults in a DynamoDB table with a strict single table design approach. 
 
-Common for the five operators is that they are binary, i. e. they take two operands and produce a result. Hence, the general form is:
+The purpose of setting out for this project was to strengten my skills in a couple of areas within AWS. It should be understood literally, this project was not done with the purpose of hoping that anyone will be using the tiny brower app for any real purpose. But it can use parts of it feel free. To cut it out clearly, I did it alone as a learning project for myself. 
 
-<center>
-OPERAND1 OPERATOR OPERAND2 = RESULT, 
-</center>
+The focur areas that I had before this project were these:  
+- DynamoDB: Obtain a better understanding DynamoDB Single-Table Design, and also programming using the DynamoDB boto3 API, in this project I choose python.
+- CDK scripting: After an earlier attempt to develop a CORS enabled API in CDK, in this project I finally succeeded. Also, in this project, I gained some valuable experience in setting up IAM policies and roles.
+- Frontend and Javascript: In 1997 I deveoped a purely static HTML site for a sports club. Yes, hand coded hypertext. That is more or less my front-end experience. Here, In this project, I ony a tiny little to that knowedge, but at east it can retrieve inputs and alert the result back to the user in the browser.  
 
+No matter what, I enjoyed working on this project, hope you find it interesting!  
+
+Fasten your seatbelt, this is going to be fun!
+
+### Artihmetic operations
+
+In this project we are focussing on the five arithmetic operations of summation, subtraction, multiplication, divison and exponential lifting.
+Common for the five operators is that they are binary, i. e. they take two operands and produce a result. Hence, the general form is:  
+
+**OPERAND1** **OPERATOR** **OPERAND2** = **RESULT**,  
 
 where **OPERAND1**, **OPERAND2** and **RESULT** are numbers, and **OPERATOR** is one of +,-,*,/ and ^
 
@@ -26,7 +43,8 @@ Examples:
 
 - 6^3 = 216
 
-Now, in this project we are not going to use the built in arithmetic capabilities of common programming languages. Instead, we ae going to implement them using lower operators.
+### Using recursion, counting and prerecorded subresults
+Now, in this project we are **not** going to use the built in arithmetic capabilities of common programming languages. Instead, we are going to implement them using lower operators. To be precise, we will define mutipication in terms of repeated summation, division in terms counting subtraction, and exponential in terms of repeated multiplication. Moreover, we are going to store any computed results, hereby being able to apply a principe of reusing prerecorded subresults.
 
 To see this, assume we have only summation (+) and subtraction (-). Here, we would still be able to implement the remaining three operators. Multiplication, for instance, is repeated summation. 6*3 (six times three), means 6+6+6, and slso 3+3+3+3+3+3, both of which yields 18.
 
@@ -40,7 +58,7 @@ In the same fashion, exponentials may be computed as repeated multiplication. 6^
 
 - 6^3 = 6 * 6^2. Exponentials can be defined recursively, by noting that the bottom element is 6^0=1.
 
-In this Math Operation project we will replace:
+As stated earlier, in this Math Operation project we will replace:
 - multiplication by repeated summation
 - division by repeated subtraction
 - exponential computation by repeated multiplication (multiplication which is replaced by repeated summation)
@@ -94,9 +112,9 @@ With the definition above, we will be able to represent arithmetic operations in
 2. If a prerecorded result does not exist, then the most appropiate prerecorded subresult mey be effectively identified, and applied in the computation.
 
 Let us see an example of the usage of a prerecorded subresult. Assume we wish to compute the exponential 6^3. 
-- First, if an item with partition key 'EXPONENTIAL#6' and sort key of 3, exists then the result may be looked up and returned directly. 
-- But, if such an item does not exist, then we will try to identify the "highest possible prerecorded subresult". Now, what do we mean by the "highest possible prerecorded subresult"? With that we mean the item with partition key 'EXPONENTIAL#6' and then the hightest possible value for the sort key, if such an item exists. Hence, if f. inst an item with partition key 'EXPONENTIAL#6' and sort key 2 exixts, then we will look up that item, note its result, which is 36 (6^2 is 36), and then use that result onwards, multiplying it by 6, obtaining the final result, which is then 216. 
-- Finally, what happens if no prerecorded result for EXPONENTIAL#6 exists? In other words, what happens if no exponential with base 6 has been computed earlier? In this case the algorithm will insert these items in the DynamoDB table:
+- First, if an item with partition key 'EXPONENTIAL#6' and sort key of 3, exists the result may be looked up and returned directly. 
+- But, if such an item does not exist, then another item with partition key being EXPONENTIAL#6 and a sort key value lower than three may exist. It it does we will look it up and reuse it. Hence, we will try to identify the "highest possible prerecorded subresult". Now, what do we mean by the "highest possible prerecorded subresult"? With that we mean the item with partition key 'EXPONENTIAL#6' and then the hightest possible value for the sort key, if such an item exists. Hence, if f. inst an item with partition key 'EXPONENTIAL#6' and sort key 2 exixts, then we will look up that item, note its result, which is by thew way 36 (6^2 is 36), and then use that result onwards, multiplying it by 6, obtaining the final result, which is then 216. And by the way, that multiplication itself, will be done using a simitar recursive principle of resuimng its own prerecorded subresults.
+- Finally, what happens if no prerecorded result for EXPONENTIAL#6 exists? In other words, what happens if no exponential with base 6 has been computed earlier? In this case the algorithm will insert these four items in the DynamoDB table, hereby computing the resut bottom-up:
 
 (EXPONENTIAL#6, 0,   1)
 
@@ -108,42 +126,29 @@ Let us see an example of the usage of a prerecorded subresult. Assume we wish to
 
 These four items will now serve the Math Operation application in these two ways: Any exponential with base 6 and an exponent being three or below may be looked up directly. And, any exponential with base 6 and an exponent being above three may be computed using the prerecorded subresult in the "highest" among the four items namely (EXPONENTIAL#6, 3, 216).
 
+### The five Lambda functions
 
+Each of the five Lambda functions receives an event containg two operands, called `operand1`, and `operand1`, and they return a json structure containing the result.
 
-Examples of items:
+$\lambda$<sub>+</sub>: Summation computes its result by adding the two operands `operand2` from `operand1` directly using the built-in + operator in Python.  
+$\lambda$<sub>-</sub>: Subtraction computes its result by subtracting `operand2` from `operand1` directly using the built-in + operator in Python.  
+$\lambda$<sub>\*</sub>: Multiplication computes its result by repeated, and counted,  invocations of $\lambda$<sub>+</sub>. Any prerecorded subresult for `MULTIPLICATION#operand1`and a sort key lower than `operand2` will be looked up and reused.  
+$\lambda$<sub>\\</sub>: Division computes its result by repeated, and counted,  invocations of $\lambda$<sub>-</sub>.    
+$\lambda$<sub>^</sub>: Exponential lifting computes its result by repeated invocations of $\lambda$<sub>*</sub>. Any prerecorded subresult for `EXPONENTIAL#operand1`and a sort key lower than `operand2` will be looked up and reused.  
 
-| operation | operand2 | result | upd_time |
-| ---	| --- | --- | ---|
-| **ADD#0** | 1 | 1 |Wed, 29 Jan 2025 14:55:45 +0000 |
-| **ADD#0** | 6 | 6 | Wed, 29 Jan 2025 14:55:47 +0000 |
-| **ADD#0** | 36 | 36 | Wed, 29 Jan 2025 14:56:43 +0000 |
-| **ADD#1** | 1 | 2 | Wed, 29 Jan 2025 14:55:46 +0000 |
-| **ADD#108** | 36 | 144 | Wed, 29 Jan 2025 14:56:43 +0000 |
-| **ADD#12** | 6 | 18 | Wed, 29 Jan 2025 14:55:47 +0000 |
-| **ADD#144** | 36 | 180 | Wed, 29 Jan 2025 14:56:43 +0000 |
-| **ADD#18** | 6 | 24 | Wed, 29 Jan 2025 14:55:47 +0000 |
-| **ADD#180** | 36 | 216 | Wed, 29 Jan 2025 14:56:43 +0000 |
-| **ADD#2** | 1 | 3 | Wed, 29 Jan 2025 14:55:46 +0000 |
-| **ADD#24** | 6 | 30 | Wed, 29 Jan 2025 14:55:47 +0000 |
-| **ADD#3** | 1 | 4 | Wed, 29 Jan 2025 14:55:46 +0000 |
-| **ADD#30** | 6 | 36 | Wed, 29 Jan 2025 14:55:47 +0000 |
-| **ADD#36** | 36 | 72 | Wed, 29 Jan 2025 14:56:43 +0000 |
-| **ADD#4** | 1 | 5 | Wed, 29 Jan 2025 14:55:46 +0000 |
-| **ADD#5** | 1 | 6 | Wed, 29 Jan 2025 14:55:46 +0000 |
-| **ADD#6** | 6 | 12 | Wed, 29 Jan 2025 14:55:47 +0000 |
+Remark: In an earlier version, I defined summation and subtraction recursively using repeated operations of adding one (+1) or subtracting 1 (-1) while counting how many times this was done. Now, while this worked well, however, recording the subresults thus obtained, in DynamoDB, made the number of items in the table grow more than I liked.
 
-
-
-
+### Disclaimer
+Currently, there is a bug in $\lambda$<sub>\\</sub>. Working on a solution. Suggestions are welcome!
 
 ## Features
 - HTML / Javascript / CSS
 - API Gateway
-- Lambda Functions
+- Five Lambda Functions
 - DynamoDB single table design
 - CDK - Cloud Development Kit
 
-Fasten your seatbelt, this is going to be fun!
+
 
 This project is set up like a standard Python project.  The initialization
 process also creates a virtualenv within this project, stored under the `.venv`
