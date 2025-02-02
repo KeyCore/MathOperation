@@ -9,7 +9,7 @@ LOCATION: Copenhagen,Denmark
 
 This project builds a serverless web application which can compute arithmetic operations using recursion and a principle of re-using prerecorded subresults in a DynamoDB table with a strict single table design approach.  
 
-The purpose of setting out for this project was to strengten my skills in a couple of areas within AWS. It should be understood literally, this project was not done with the purpose of hoping that anyone will be using the tiny brower app for any real purpose. But it can use parts of it feel free. To cut it out clearly, I did it alone as a learning project for myself. 
+The purpose of setting out for this project was to strengten my skills in a couple of areas within AWS. It should be understood literally: To cut it out clearly, I did it alone as a learning project for myself. Now, while this project was not done with the hope that anyone will be using this tiny brower app for any real practical purpose, I will still hope that someone may find it fruitful to use ideas from it.
 
 ### A personal Learning project 
 
@@ -113,20 +113,34 @@ With the definition above, we will be able to represent arithmetic operations in
 1. Existing prerecorded results can be looked up fast. 
 2. If a prerecorded result does not exist, then the most appropiate prerecorded subresult mey be effectively identified, and applied in the computation.
 
-Let us see an example of the usage of a prerecorded subresult. Assume we wish to compute the exponential 6^3. 
-- First, if an item with partition key 'EXPONENTIAL#6' and sort key of 3, exists the result may be looked up and returned directly. 
-- But, if such an item does not exist, then another item with partition key being EXPONENTIAL#6 and a sort key value lower than three may exist. It it does we will look it up and reuse it. Hence, we will try to identify the "highest possible prerecorded subresult". Now, what do we mean by the "highest possible prerecorded subresult"? With that we mean the item with partition key 'EXPONENTIAL#6' and then the hightest possible value for the sort key, if such an item exists. Hence, if f. inst an item with partition key 'EXPONENTIAL#6' and sort key 2 exixts, then we will look up that item, note its result, which is by thew way 36 (6^2 is 36), and then use that result onwards, multiplying it by 6, obtaining the final result, which is then 216. And by the way, that multiplication itself, will be done using a simitar recursive principle of resuimng its own prerecorded subresults.
+Let us see an example of how a prerecorded subresult may help us. Assume we wish to compute the exponential 6^3. 
+
+- First, if an item with partition key 'EXPONENTIAL#6' and sort key of 3 exists the result has indeed be computed earlier, and the result may be looked up and returned directly, as shown below. Here, operation has the value **EXPONENTIAL#6** and exponent is **3**.
+
+ `rs=table.query(KeyConditionExpression=Key('operation').eq(operation)&Key('operand2').eq(exponent))`  
+ `Result=rs['Items'][0]['result'] `
+
+- But, if such an item does not exist, then another item with partition key being **EXPONENTIAL#6** and a sort key with a value lower than three may exist, and be helpfull for us. In case it does, we will look it up and reuse it. Hence, we will try to identify the "highest possible prerecorded subresult". Now, what do we mean by the "highest possible prerecorded subresult"? With that we mean the item with partition key 'EXPONENTIAL#6' and then the hightest possible value for the sort key, if such an item exists. Hence, if f. inst an item with partition key 'EXPONENTIAL#6' and sort key 2 exixts, then we will look up that item, in the following way:
+
+`rs=table.query(KeyConditionExpression=Key('operation').eq(operation),ScanIndexForward=False, Limit=1)`
+
+Again, we provide a partition key of value **EXPONENTIAL#6**, but the sort key is not provided. Instead we use ´ScanIndexForward=False´ to  receive the items in decending order based on the sort key. And this is important, since we are interested in the item with the highest sort key. Moreover, we use ´Limit=1´ which makes sure that we only get one single item. We note its result, which is by thew way 36 (6^2 is 36), and then use that result onwards, multiplying it by 6, obtaining the final result, which is then 216.
+At this point we insert (put_item) the final resulting item `(EXPONENTIAL#6, 3, 216)` in the table. And by the way, that befiore-mentioned multiplication itself, will be done using a similar recursive principle of reusing its own prerecorded multiplication subresults.
+
 - Finally, what happens if no prerecorded result for EXPONENTIAL#6 exists? In other words, what happens if no exponential with base 6 has been computed earlier? In this case the algorithm will insert these four items in the DynamoDB table, hereby computing the resut bottom-up:
 
-(EXPONENTIAL#6, 0,   1)
+`(EXPONENTIAL#6, 0,   1)`  
 
-(EXPONENTIAL#6, 1,   6)
+`(EXPONENTIAL#6, 1,   6)`  
 
-(EXPONENTIAL#6, 2,  36)
+`(EXPONENTIAL#6, 2,  36)`  
 
-(EXPONENTIAL#6, 3, 216)
+`(EXPONENTIAL#6, 3, 216)`  
 
 These four items will now serve the Math Operation application in these two ways: Any exponential with base 6 and an exponent being three or below may be looked up directly. And, any exponential with base 6 and an exponent being above three may be computed using the prerecorded subresult in the "highest" among the four items namely (EXPONENTIAL#6, 3, 216).
+
+### Accumulative Calculations
+With our approach of storing results, and subresults, in DynamoDB, we obtain the fantastic phenomenon, that the more our webapplication is being used, the more arithmetic expressions, and their results, it knows. Hence, the more it is used, the more likeliy it becomes that a requested calculation may be looked up and returnd directly.
 
 ### The five Lambda functions
 
