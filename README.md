@@ -1,5 +1,5 @@
 
-# Math Operation Project - s personal learning project for serverless web applications and DynamoDB Single Table Design
+# Math Operation Project - a personal learning project for serverless web applications and DynamoDB Single Table Design
 
 AUTHOR: Kåre J. Kristoffersen, Cloud2@Denmark  
 DATE: Feb 2nd, 2025  
