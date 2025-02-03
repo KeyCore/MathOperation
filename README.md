@@ -3,13 +3,13 @@
 
 AUTHOR: Kåre J. Kristoffersen, Cloud2@Denmark  
 DATE: Feb 2nd, 2025  
-LOCATION: Copenhagen,Denmark  
+LOCATION: Copenhagen, Denmark  
 
 ### Background and Motivation
 
 This project builds a serverless web application which can compute arithmetic operations using recursion and a principle of re-using prerecorded subresults in a DynamoDB table with a strict single table design approach.  
 
-The purpose of setting out for this project was to strengten my skills in a couple of areas within AWS. It should be understood literally: To cut it out clearly, I did it alone as a learning project for myself. Now, while this project was not done with the hope that anyone will be using this tiny brower app for any real practical purpose, I will still hope that someone may find it fruitful to use ideas from it.
+The purpose of setting out for this project is to strengten my skills in a couple of central areas within AWS. It should be understood literally: To cut it out clearly, I did it alone as a learning project for myself. Now, while this project was not done with the hope that anyone will be using this tiny brower app for any real practical purpose, I will still hope that someone may find it fruitful to use ideas from it.
 
 ### A personal Learning project 
 
@@ -24,7 +24,7 @@ No matter what, I enjoyed working on this project, hope you find it interesting!
 
 Fasten your seatbelt, this is going to be fun!
 
-### Artihmetic operations
+### Artihmetic Operations
 
 In this project we are focussing on the five arithmetic operations of summation, subtraction, multiplication, divison and exponential lifting.
 Common for the five operators is that they are binary, i. e. they take two operands and produce a result. Hence, the general form is:  
@@ -45,17 +45,23 @@ Examples:
 
 - 6^3 = 216
 
-### Using recursion, counting and prerecorded subresults
-Now, in this project we are **not** going to use the built in arithmetic capabilities of common programming languages. Instead, we are going to implement them using lower operators. To be precise, we will define mutipication in terms of repeated summation, division in terms counting subtraction, and exponential in terms of repeated multiplication. Moreover, we are going to store any computed results, hereby being able to apply a principe of reusing prerecorded subresults.
+### Iterations and Prerecorded Subexpressions
+In this project we will let summation and subtraction be done by the built-in operations (+,-) in the chosen programming language, which is python. Multiplication however, is by essence repeated summation (or subtraction, if the factors have opposite signs), division is repeated subtraction (or summation, if the dividend and the divisor have opposite signs), and finally exponentials are repeated multiplication. And we are going to use these facts in this project. In fact we are going to define five Lambda functions, $\lambda$<sub>+</sub>, $\lambda$<sub>-</sub>, $\lambda$<sub>*</sub>, $\lambda$<sub>\\</sub> and $\lambda$<sub>^</sub>, one for each of the five arithmetic operators. And these Lambda functions will sometimes be calling exach other (invoke). More precisely, $\lambda$<sub>*</sub> will be calling $\lambda$<sub>+</sub> and $\lambda$<sub>-</sub>, $\lambda$<sub>^</sub> will be calling $\lambda$<sub>*</sub>, which again calls the Lambdas for summation and subtraction.
+
+### Multipliction is Repeated Summation
+Now, in this project we are **not** going to use the built in arithmetic capabilities of common programming languages. Instead, we are going to implement them using lower operators. To be precise, we will define mutipication in terms of repeated summation, division in terms of repeated subtraction, and exponential in terms of repeated multiplication. Moreover, we are going to store any computed results, hereby being able to apply a principe of reusing prerecorded subresults.
 
 To see this, assume we have only summation (+) and subtraction (-). Here, we would still be able to implement the remaining three operators. Multiplication, for instance, is repeated summation. 6*3 (six times three), means 6+6+6, and slso 3+3+3+3+3+3, both of which yields 18.
 
 - 6*3 = 6 + 6 + 6 (also 6*3 equals 3+3+3+3+3+3+3).
 
+### Division is Repeated Subtraction
+
 Division is repeated subtraction of one number from another, while counting how many times it ca be done. 6/3 (6 divided by three) for instance  means asking, how many times may 3 be drawn from 6, and the answer is 2.
 
 - 6 / 3 = How many times 3 may be subtracted from 6 before reaching 0, which is 2.
 
+### Exonentials are Repeated Multiplication
 In the same fashion, exponentials may be computed as repeated multiplication. 6^3 for instance, means 6*6*6. 
 
 - 6^3 = 6 * 6^2. Exponentials can be defined recursively, by noting that the bottom element is 6^0=1.
@@ -149,7 +155,7 @@ Each of the five Lambda functions receives an event containg two operands, calle
 $\lambda$<sub>+</sub>: Summation computes its result by adding the two operands `operand2` from `operand1` directly using the built-in + operator in Python.  
 $\lambda$<sub>-</sub>: Subtraction computes its result by subtracting `operand2` from `operand1` directly using the built-in + operator in Python.  
 $\lambda$<sub>\*</sub>: Multiplication computes its result by repeated, and counted,  invocations of $\lambda$<sub>+</sub>. Any prerecorded subresult for `MULTIPLICATION#operand1`and a sort key lower than `operand2` will be looked up and reused.  
-$\lambda$<sub>\\</sub>: Division computes its result by repeated, and counted,  invocations of $\lambda$<sub>-</sub>.    
+$\lambda$<sub>\\</sub>: Division computes its result by repeated, and counted,  invocations of $\lambda$<sub>-</sub>. More precisely, division will repeatedly subtract `operand2` from `operand1`until 0 is reached, and coun tthe number of subtracts was used. Any prerecorded subresult for expressions (`DIVISION#op`, operand2), where `op`is a result of subtracting an integral number of `operand2's`from `operand1`, will be looked up and reused.
 $\lambda$<sub>^</sub>: Exponential lifting computes its result by repeated invocations of $\lambda$<sub>*</sub>. Any prerecorded subresult for `EXPONENTIAL#operand1`and a sort key lower than `operand2` will be looked up and reused.  
 
 Remark: In an earlier version, I defined summation and subtraction recursively using repeated operations of adding one (+1) or subtracting 1 (-1) while counting how many times this was done. Now, while this worked well, however, recording the subresults thus obtained, in DynamoDB, made the number of items in the table grow more than I liked.
@@ -163,8 +169,6 @@ Currently, there are no disclaimers.
 - Five Lambda Functions
 - DynamoDB single table design
 - CDK - Cloud Development Kit
-
-
 
 This project is set up like a standard Python project.  The initialization
 process also creates a virtualenv within this project, stored under the `.venv`
