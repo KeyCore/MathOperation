@@ -155,7 +155,7 @@ $\lambda$<sub>^</sub>: Exponential lifting computes its result by repeated invoc
 Remark: In an earlier version, I defined summation and subtraction recursively using repeated operations of adding one (+1) or subtracting 1 (-1) while counting how many times this was done. Now, while this worked well, however, recording the subresults thus obtained, in DynamoDB, made the number of items in the table grow more than I liked.
 
 ### Disclaimer
-Currently, there is a bug in $\lambda$<sub>\\</sub>. Working on a solution. Suggestions are welcome!
+Currently, there are no disclaimers.
 
 ## Features
 - HTML / Javascript / CSS

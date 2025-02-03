@@ -45,6 +45,21 @@ def lambda_handler(event, context):
             'statusCode': 200,
             'body': json.dumps('The divisor must be a factor of the dividend: '+str(divisor)+' is not a factor of '+str(dividend))
         }
+    
+    if dividend>0:
+        lSignDividend='POS'
+    else:
+        lSignDividend='NEG';
+        dividend=-dividend;
+
+    if divisor>0:
+        lSignDivisor='POS'
+    else:
+        lSignDivisor='NEG';
+        divisor=-divisor;
+
+
+
     # 
     # 
     for i in range(dividend,0,-divisor):
@@ -74,6 +89,9 @@ def lambda_handler(event, context):
             }
         )
         j=j+1
+
+    if lSignDividend != lSignDivisor:
+        mathResult=-mathResult
     
     return {
         'statusCode': 200,
