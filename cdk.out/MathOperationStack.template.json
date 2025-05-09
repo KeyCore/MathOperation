@@ -142,7 +142,7 @@
      "cdk-hnb659fds-assets-153065748672-eu-west-1"
     ],
     "SourceObjectKeys": [
-     "031c20f26916e35b94a337c31f6cdfd6003ac9de5164b88993a1592aaa5a1fc5.zip"
+     "f97dd848d04cc0e70b7e73508aae9118ba5cdd8550fc26e0759936b341eab9c6.zip"
     ],
     "DestinationBucketName": {
      "Ref": "myBucket5AF9C99B"
